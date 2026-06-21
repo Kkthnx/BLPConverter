@@ -1,0 +1,10 @@
+[workspace]
+members = ["src-tauri", "blp-shell-ext"]
+resolver = "2"
+
+[profile.release]
+panic = "abort"
+codegen-units = 1
+lto = true
+opt-level = "s"
+strip = true
