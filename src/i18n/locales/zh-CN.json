@@ -45,7 +45,10 @@
     "restartExplorer": "重启资源管理器",
     "statusError": "无法读取 BLPView 状态。",
     "installFailed": "安装失败",
-    "uninstallFailed": "卸载失败"
+    "uninstallFailed": "卸载失败",
+    "restartFailed": "无法重启资源管理器",
+    "loadingStatus": "正在检查 BLPView 状态…",
+    "unsupportedReason": "BLPView 是 Windows 文件资源管理器的 Shell 扩展。.blp 文件的文件夹缩略图仅在 Windows 10/11 上可用。"
   },
   "conversion": {
     "start": "正在转换 {{count}} 个文件（{{label}}）…",

@@ -65,6 +65,18 @@ fn uninstall_inner() -> io::Result<()> {
         &format!(r"Software\Classes\SystemFileAssociations\{DEFAULT_EXT}"),
         &preview_catid,
     )?;
+    remove_shellex(
+        &format!(
+            r"Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\{DEFAULT_EXT}"
+        ),
+        &thumb_catid,
+    )?;
+    remove_shellex(
+        &format!(
+            r"Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\{DEFAULT_EXT}"
+        ),
+        &preview_catid,
+    )?;
 
     del_value(
         r"Software\Microsoft\Windows\CurrentVersion\Explorer\ThumbnailHandlers",

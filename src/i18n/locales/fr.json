@@ -45,7 +45,10 @@
     "restartExplorer": "Redémarrer l'Explorateur",
     "statusError": "Impossible de lire l'état de BLPView.",
     "installFailed": "Échec de l'installation",
-    "uninstallFailed": "Échec de la désinstallation"
+    "uninstallFailed": "Échec de la désinstallation",
+    "restartFailed": "Impossible de redémarrer l'Explorateur",
+    "loadingStatus": "Vérification de l'état de BLPView…",
+    "unsupportedReason": "BLPView est une extension shell de l'Explorateur Windows. Les miniatures de dossiers pour les fichiers .blp ne sont disponibles que sur Windows 10/11."
   },
   "conversion": {
     "start": "Conversion de {{count}} fichier(s) ({{label}})…",

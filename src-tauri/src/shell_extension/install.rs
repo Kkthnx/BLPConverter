@@ -48,7 +48,8 @@ fn install_inner() -> io::Result<()> {
     {
         let cls = RegKeyHelper::open(&root, format!(r"Software\Classes\CLSID\{thumb_clsid}"))?;
         cls.set_default(FRIENDLY_NAME)?;
-        #[cfg(debug_assertions)]
+        // Run inside Explorer instead of an isolated surrogate. Required for reliable
+        // thumbnail activation on many Windows 10/11 setups.
         cls.set("DisableProcessIsolation", 1u32)?;
         let inproc = cls.sub("InprocServer32")?;
         inproc.set_default(dll_path.as_os_str())?;
@@ -82,6 +83,18 @@ fn install_inner() -> io::Result<()> {
             format!(r"Software\Classes\SystemFileAssociations\{DEFAULT_EXT}\ShellEx"),
         )?;
         sfa.sub(&thumb_catid)?.set_default(thumb_clsid.as_str())?;
+    }
+
+    {
+        let file_exts = RegKeyHelper::open(
+            &root,
+            format!(
+                r"Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\{DEFAULT_EXT}\ShellEx"
+            ),
+        )?;
+        file_exts
+            .sub(&thumb_catid)?
+            .set_default(thumb_clsid.as_str())?;
     }
 
     RegKeyHelper::open(
@@ -146,6 +159,12 @@ fn pre_clean(
         format!(r"Software\Classes\{progid}\ShellEx\{preview_catid}"),
         format!(r"Software\Classes\SystemFileAssociations\{ext}\ShellEx\{thumb_catid}"),
         format!(r"Software\Classes\SystemFileAssociations\{ext}\ShellEx\{preview_catid}"),
+        format!(
+            r"Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\{ext}\ShellEx\{thumb_catid}"
+        ),
+        format!(
+            r"Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\{ext}\ShellEx\{preview_catid}"
+        ),
         format!(r"Software\Classes\{ext}\PersistentHandler"),
     ] {
         let _ = del_tree(&path);

@@ -45,7 +45,10 @@
     "restartExplorer": "탐색기 다시 시작",
     "statusError": "BLPView 상태를 읽을 수 없습니다.",
     "installFailed": "설치 실패",
-    "uninstallFailed": "제거 실패"
+    "uninstallFailed": "제거 실패",
+    "restartFailed": "탐색기를 다시 시작할 수 없습니다",
+    "loadingStatus": "BLPView 상태 확인 중…",
+    "unsupportedReason": "BLPView는 Windows 파일 탐색기 셸 확장입니다. .blp 파일의 폴더 썸네일은 Windows 10/11에서만 사용할 수 있습니다."
   },
   "conversion": {
     "start": "{{count}}개 파일 변환 중 ({{label}})…",

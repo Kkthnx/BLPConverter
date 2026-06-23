@@ -46,7 +46,9 @@
     "statusError": "Could not read BLPView status.",
     "installFailed": "Install failed",
     "uninstallFailed": "Uninstall failed",
-    "restartFailed": "Could not restart Explorer"
+    "restartFailed": "Could not restart Explorer",
+    "loadingStatus": "Checking BLPView status…",
+    "unsupportedReason": "BLPView is a Windows File Explorer shell extension. Folder thumbnails for .blp files are only available on Windows 10/11."
   },
   "conversion": {
     "start": "Converting {{count}} file(s) ({{label}})…",

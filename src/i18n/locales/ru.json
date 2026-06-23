@@ -45,7 +45,10 @@
     "restartExplorer": "Перезапустить проводник",
     "statusError": "Не удалось прочитать статус BLPView.",
     "installFailed": "Ошибка установки",
-    "uninstallFailed": "Ошибка удаления"
+    "uninstallFailed": "Ошибка удаления",
+    "restartFailed": "Не удалось перезапустить проводник",
+    "loadingStatus": "Проверка статуса BLPView…",
+    "unsupportedReason": "BLPView — это расширение оболочки проводника Windows. Миниатюры папок для файлов .blp доступны только в Windows 10/11."
   },
   "conversion": {
     "start": "Конвертация {{count}} файл(ов) ({{label}})…",

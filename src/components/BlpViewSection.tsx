@@ -65,9 +65,8 @@ export function BlpViewSection() {
     }
   };
 
-  if (!status?.supported) {
-    return null;
-  }
+  const unsupported = status !== null && !status.supported;
+  const controlsDisabled = loading || unsupported || status === null;
 
   return (
     <section>
@@ -75,34 +74,40 @@ export function BlpViewSection() {
         {t("blpview.title")}
       </h3>
 
-      <div className="space-y-2 rounded-lg border border-workspace-border bg-workspace-surface p-2.5">
+      <div
+        className={`space-y-2 rounded-lg border border-workspace-border bg-workspace-surface p-2.5 ${
+          unsupported ? "opacity-50" : ""
+        }`}
+      >
         <div className="flex items-start gap-2">
-          {status.installed ? (
+          {status?.installed ? (
             <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-400" />
           ) : (
             <Monitor className="mt-0.5 h-3.5 w-3.5 shrink-0 text-workspace-silver-muted" />
           )}
           <p className="text-[11px] leading-relaxed text-workspace-silver-muted">
-            {status.message}
+            {unsupported
+              ? t("blpview.unsupportedReason")
+              : (status?.message ?? t("blpview.loadingStatus"))}
           </p>
         </div>
 
         <div className="flex flex-wrap gap-1.5">
-          {!status.installed ? (
+          {!status?.installed ? (
             <button
               type="button"
-              disabled={loading}
+              disabled={controlsDisabled}
               onClick={handleInstall}
-              className="rounded-md bg-workspace-cyan/15 px-2.5 py-1.5 text-[11px] font-medium text-workspace-cyan ring-1 ring-workspace-cyan/30 disabled:opacity-40"
+              className="rounded-md bg-workspace-cyan/15 px-2.5 py-1.5 text-[11px] font-medium text-workspace-cyan ring-1 ring-workspace-cyan/30 disabled:cursor-not-allowed disabled:opacity-40"
             >
               {t("blpview.install")}
             </button>
           ) : (
             <button
               type="button"
-              disabled={loading}
+              disabled={controlsDisabled}
               onClick={handleUninstall}
-              className="rounded-md border border-workspace-border px-2.5 py-1.5 text-[11px] text-workspace-silver-muted hover:text-red-400 disabled:opacity-40"
+              className="rounded-md border border-workspace-border px-2.5 py-1.5 text-[11px] text-workspace-silver-muted hover:text-red-400 disabled:cursor-not-allowed disabled:opacity-40"
             >
               <Unplug className="mr-1 inline h-3 w-3" />
               {t("blpview.uninstall")}
@@ -110,7 +115,7 @@ export function BlpViewSection() {
           )}
           <button
             type="button"
-            disabled={loading}
+            disabled={controlsDisabled}
             onClick={async () => {
               try {
                 await restartExplorer();
@@ -122,7 +127,7 @@ export function BlpViewSection() {
                 );
               }
             }}
-            className="rounded-md border border-workspace-border px-2.5 py-1.5 text-[11px] text-workspace-silver-muted hover:text-workspace-cyan disabled:opacity-40"
+            className="rounded-md border border-workspace-border px-2.5 py-1.5 text-[11px] text-workspace-silver-muted hover:text-workspace-cyan disabled:cursor-not-allowed disabled:opacity-40"
           >
             <RefreshCw className="mr-1 inline h-3 w-3" />
             {t("blpview.restartExplorer")}

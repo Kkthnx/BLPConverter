@@ -45,7 +45,10 @@
     "restartExplorer": "Explorer neu starten",
     "statusError": "BLPView-Status konnte nicht gelesen werden.",
     "installFailed": "Installation fehlgeschlagen",
-    "uninstallFailed": "Deinstallation fehlgeschlagen"
+    "uninstallFailed": "Deinstallation fehlgeschlagen",
+    "restartFailed": "Explorer konnte nicht neu gestartet werden",
+    "loadingStatus": "BLPView-Status wird geprüft…",
+    "unsupportedReason": "BLPView ist eine Windows-Explorer-Shell-Erweiterung. Ordner-Vorschauen für .blp-Dateien sind nur unter Windows 10/11 verfügbar."
   },
   "conversion": {
     "start": "Konvertiere {{count}} Datei(en) ({{label}})…",

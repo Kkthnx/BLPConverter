@@ -37,13 +37,35 @@ pub fn get_blpview_status() -> BlpViewStatus {
         .map(|value| PathBuf::from(value) == dll_path)
         .unwrap_or(false);
 
-    let installed = registry_installed && dll_exists && shellex_ok && dll_path_matches;
+    let approved_ok = RegKeyHelper::open(
+        &root,
+        r"Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved",
+    )
+    .ok()
+    .and_then(|key| key.get::<String>(&clsid).ok())
+    .is_some();
+
+    let isolation_ok = root
+        .open_subkey(format!(r"Software\Classes\CLSID\{clsid}"))
+        .ok()
+        .and_then(|key| key.get_value::<u32, _>("DisableProcessIsolation").ok())
+        .map(|value| value != 0)
+        .unwrap_or(false);
+
+    let installed = registry_installed
+        && dll_exists
+        && shellex_ok
+        && dll_path_matches
+        && approved_ok
+        && isolation_ok;
 
     let message = if installed {
         "BLPView is active — .blp thumbnails show in Windows Explorer.".into()
     } else if registry_installed && !dll_exists {
         "BLPView registry entries exist but the thumbnail DLL is missing. Reinstall BLPView.".into()
-    } else if registry_installed && (!shellex_ok || !dll_path_matches) {
+    } else if registry_installed && !isolation_ok {
+        "BLPView needs a reinstall to refresh Explorer thumbnail settings.".into()
+    } else if registry_installed && (!shellex_ok || !dll_path_matches || !approved_ok) {
         "BLPView registration looks incomplete. Reinstall BLPView.".into()
     } else {
         "Install BLPView to show .blp thumbnails directly in Windows Explorer.".into()
