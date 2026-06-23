@@ -7,9 +7,12 @@ use winreg::types::FromRegValue;
 use winreg::{RegKey, RegValue};
 
 pub(crate) fn notify_shell_assoc(_reason: &str) {
-    use windows::Win32::UI::Shell::{SHChangeNotify, SHCNE_ASSOCCHANGED, SHCNF_IDLIST};
+    use windows::Win32::UI::Shell::{
+        SHChangeNotify, SHCNE_ASSOCCHANGED, SHCNE_UPDATEIMAGE, SHCNF_IDLIST,
+    };
     unsafe {
         SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, None, None);
+        SHChangeNotify(SHCNE_UPDATEIMAGE, SHCNF_IDLIST, None, None);
     }
 }
 

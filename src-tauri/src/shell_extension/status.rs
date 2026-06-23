@@ -5,6 +5,7 @@ use winreg::enums::HKEY_CURRENT_USER;
 use winreg::RegKey;
 
 use crate::types::BlpViewStatus;
+use super::conflict::legacy_conflict_message;
 use super::paths::expected_dll_path;
 use super::reg_helpers::RegKeyHelper;
 
@@ -59,8 +60,10 @@ pub fn get_blpview_status() -> BlpViewStatus {
         && approved_ok
         && isolation_ok;
 
-    let message = if installed {
-        "BLPView is active — .blp thumbnails show in Windows Explorer.".into()
+    let message = if let Some(conflict) = legacy_conflict_message() {
+        conflict.into()
+    } else if installed {
+        "BLPView is active — .blp thumbnails show in Windows Explorer. Use Large or Extra large icons view.".into()
     } else if registry_installed && !dll_exists {
         "BLPView registry entries exist but the thumbnail DLL is missing. Reinstall BLPView.".into()
     } else if registry_installed && !isolation_ok {

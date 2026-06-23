@@ -1,4 +1,6 @@
 #[cfg(windows)]
+mod conflict;
+#[cfg(windows)]
 mod paths;
 #[cfg(windows)]
 mod reg_helpers;

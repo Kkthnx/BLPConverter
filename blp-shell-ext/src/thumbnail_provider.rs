@@ -176,10 +176,13 @@ impl IThumbnailProvider_Impl for BlpThumbProvider_Impl {
         let (width, height, rgba) =
             decode_blp_rgba(&data).map_err(|_| windows::core::Error::from(E_FAIL))?;
 
-        let (target_w, target_h, rgba_fit) = if cx > 0 && width.max(height) > cx {
-            resize_fit_rgba(&rgba, width, height, cx)
-        } else {
-            (width, height, rgba)
+        let (target_w, target_h, rgba_fit) = {
+            let max_dim = if cx > 0 { cx } else { 256 };
+            if width.max(height) > max_dim {
+                resize_fit_rgba(&rgba, width, height, max_dim)
+            } else {
+                (width, height, rgba)
+            }
         };
 
         let bgra = rgba_to_bgra(&rgba_fit);

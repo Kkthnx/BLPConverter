@@ -1,4 +1,3 @@
-use std::fs;
 use std::io;
 
 use blp_shell_ext::{GuidExt, CLSID_BLP_THUMB, DEFAULT_EXT, DEFAULT_PROGID, SHELL_PREVIEW_HANDLER_CATID, SHELL_THUMB_HANDLER_CATID};
@@ -6,7 +5,7 @@ use winreg::enums::{HKEY_CURRENT_USER, KEY_READ, KEY_SET_VALUE};
 use winreg::RegKey;
 
 use crate::types::BlpViewActionResult;
-use super::paths::expected_dll_path;
+use super::paths::remove_installed_dlls;
 use super::reg_helpers::notify_shell_assoc;
 
 pub fn uninstall_blpview() -> Result<BlpViewActionResult, String> {
@@ -88,10 +87,7 @@ fn uninstall_inner() -> io::Result<()> {
     del_tree(&format!(r"Software\Classes\{DEFAULT_PROGID}"))?;
     del_tree(&format!(r"Software\Classes\{DEFAULT_EXT}"))?;
 
-    let dll_path = expected_dll_path();
-    if dll_path.exists() {
-        let _ = fs::remove_file(&dll_path);
-    }
+    remove_installed_dlls();
 
     notify_shell_assoc("uninstall");
     Ok(())

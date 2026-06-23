@@ -10,7 +10,7 @@ use winreg::enums::{HKEY_CURRENT_USER, KEY_READ, KEY_SET_VALUE};
 use winreg::RegKey;
 
 use crate::types::BlpViewActionResult;
-use super::paths::expected_dll_path;
+use super::paths::{ensure_dll_parent, preferred_dll_path};
 use super::reg_helpers::{notify_shell_assoc, RegKeyHelper};
 
 #[cfg(windows)]
@@ -75,14 +75,23 @@ fn install_inner() -> io::Result<()> {
     }
 
     {
-        let ext_sx = RegKeyHelper::open(&root, format!(r"Software\Classes\{DEFAULT_EXT}\ShellEx"))?;
-        ext_sx.sub(&thumb_catid)?.set_default(thumb_clsid.as_str())?;
-
         let sfa = RegKeyHelper::open(
             &root,
-            format!(r"Software\Classes\SystemFileAssociations\{DEFAULT_EXT}\ShellEx"),
+            format!(r"Software\Classes\SystemFileAssociations\{DEFAULT_EXT}"),
         )?;
-        sfa.sub(&thumb_catid)?.set_default(thumb_clsid.as_str())?;
+        sfa.set("PerceivedType", "image")?;
+        sfa.set("Content Type", "image/x-blp")?;
+        sfa.set("Application", DEFAULT_PROGID)?;
+
+        let sfa_sx = sfa.sub("ShellEx")?;
+        sfa_sx
+            .sub(&thumb_catid)?
+            .set_default(thumb_clsid.as_str())?;
+    }
+
+    {
+        let ext_sx = RegKeyHelper::open(&root, format!(r"Software\Classes\{DEFAULT_EXT}\ShellEx"))?;
+        ext_sx.sub(&thumb_catid)?.set_default(thumb_clsid.as_str())?;
     }
 
     {
@@ -115,10 +124,8 @@ fn materialize_dll() -> io::Result<PathBuf> {
         ));
     }
 
-    let path = expected_dll_path();
-    if let Some(parent) = path.parent() {
-        fs::create_dir_all(parent)?;
-    }
+    let path = preferred_dll_path();
+    ensure_dll_parent(&path)?;
     fs::write(&path, DLL_BYTES)?;
     Ok(path)
 }
