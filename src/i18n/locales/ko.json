@@ -1,0 +1,72 @@
+{
+  "app": {
+    "name": "BLP Converter",
+    "tagline": "월드 오브 워크래프트 텍스처용 빠른 BLP ↔ PNG 변환",
+    "description": "블리자드 BLP 텍스처 파일을 PNG로 변환하거나 그 반대로 변환하는 가벼운 데스크톱 도구입니다. 왼쪽(BLP) 또는 오른쪽(PNG)에 파일을 드롭하면 병렬로 변환됩니다. 설정에서 다른 폴더를 선택하지 않으면 원본 파일 옆에 저장됩니다.",
+    "madeBy": "제작: {{author}}",
+    "dropToConvert": "변환할 파일을 드롭하세요",
+    "converting": "변환 중…"
+  },
+  "panels": {
+    "toPng": {
+      "hint": ".blp 파일 또는 폴더 드롭",
+      "subhint": "투명 PNG보내기"
+    },
+    "toBlp": {
+      "hint": ".png 파일 또는 폴더 드롭",
+      "subhint": "압축 설정으로 인코딩"
+    }
+  },
+  "activity": {
+    "title": "활동",
+    "clear": "지우기",
+    "empty": "BLP 또는 PNG 파일을 드롭하세요 — 기본적으로 원본 옆에 저장됩니다."
+  },
+  "settings": {
+    "title": "설정",
+    "close": "닫기",
+    "language": "언어",
+    "outputFolder": "출력 폴더",
+    "outputFolderHint": "선택 사항. 비워 두면 원본 옆에 저장됩니다.",
+    "outputDefault": "원본과 같은 폴더 (기본값)",
+    "resetOutput": "원본 폴더로 재설정",
+    "compression": "PNG → BLP 압축",
+    "compressionRaw": "비압축 / RAW",
+    "compressionDxt1": "DXT1 (불투명 또는 1비트 알파)",
+    "compressionDxt3": "DXT3 (선명한 알파 가장자리)",
+    "compressionDxt5": "DXT5 (부드러운 알파)",
+    "generateMipmaps": "BLP 출력용 밉맵 생성",
+    "pickOutputTitle": "출력 폴더 선택"
+  },
+  "blpview": {
+    "title": "탐색기 썸네일 (BLPView)",
+    "install": "설치",
+    "uninstall": "제거",
+    "restartExplorer": "탐색기 다시 시작",
+    "statusError": "BLPView 상태를 읽을 수 없습니다.",
+    "installFailed": "설치 실패",
+    "uninstallFailed": "제거 실패"
+  },
+  "conversion": {
+    "start": "{{count}}개 파일 변환 중 ({{label}})…",
+    "outputSameFolder": "출력: 원본과 같은 폴더",
+    "noFiles": "이 쪽에서 {{format}} 파일을 찾을 수 없습니다.",
+    "fileResult": "{{name}} → {{path}}",
+    "failed": "변환 실패",
+    "done": "완료 — 성공 {{succeeded}}개, 실패 {{failed}}개.",
+    "scanError": "스캔: {{error}}",
+    "dropFailed": "드롭한 파일을 처리하지 못했습니다",
+    "busy": "변환 중입니다 — 현재 작업이 끝날 때까지 기다려 주세요.",
+    "outputCustomFolder": "출력: {{path}}",
+    "labelBlpToPng": "BLP → PNG",
+    "labelPngToBlp": "PNG → BLP"
+  },
+  "about": {
+    "title": "정보"
+  },
+  "errorBoundary": {
+    "title": "문제가 발생했습니다",
+    "fallback": "예기치 않은 오류가 발생했습니다.",
+    "retry": "다시 시도"
+  }
+}

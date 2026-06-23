@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect x="6" y="6" width="52" height="52" rx="14" fill="#12141a" stroke="#00e5ff" stroke-width="2.5"/>
+  <text x="32" y="34" font-family="Segoe UI, system-ui, sans-serif" font-size="15" font-weight="700" fill="#00e5ff" text-anchor="middle">BLP</text>
+  <path d="M20 44h6" stroke="#00e5ff" stroke-width="2" stroke-linecap="round"/>
+  <path d="M17 44l3-2.5M17 44l3 2.5" stroke="#00e5ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M44 44h-6" stroke="#9ca3af" stroke-width="2" stroke-linecap="round"/>
+  <path d="M47 44l-3-2.5M47 44l-3 2.5" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="32" cy="44" r="1.5" fill="#6b7280"/>
+</svg>

@@ -1,0 +1,72 @@
+{
+  "app": {
+    "name": "BLP Converter",
+    "tagline": "Быстрая конвертация BLP ↔ PNG для текстур World of Warcraft",
+    "description": "Лёгкое настольное приложение для конвертации текстур Blizzard BLP в PNG и обратно. Перетащите файлы на левую (BLP) или правую (PNG) сторону — конвертация выполняется параллельно. Файлы сохраняются рядом с оригиналами, если не выбрана другая папка в настройках.",
+    "madeBy": "Автор: {{author}}",
+    "dropToConvert": "Перетащите файлы для конвертации",
+    "converting": "Конвертация…"
+  },
+  "panels": {
+    "toPng": {
+      "hint": "Перетащите файлы или папки .blp",
+      "subhint": "Экспорт прозрачных PNG"
+    },
+    "toBlp": {
+      "hint": "Перетащите файлы или папки .png",
+      "subhint": "Кодирование с вашими настройками сжатия"
+    }
+  },
+  "activity": {
+    "title": "Журнал",
+    "clear": "Очистить",
+    "empty": "Перетащите BLP или PNG — по умолчанию файлы сохраняются рядом с оригиналами."
+  },
+  "settings": {
+    "title": "Настройки",
+    "close": "Закрыть",
+    "language": "Язык",
+    "outputFolder": "Папка вывода",
+    "outputFolderHint": "Необязательно. Оставьте пустым, чтобы сохранять рядом с оригиналами.",
+    "outputDefault": "Та же папка, что и источник (по умолчанию)",
+    "resetOutput": "Сбросить на папку источника",
+    "compression": "Сжатие PNG → BLP",
+    "compressionRaw": "Без сжатия / RAW",
+    "compressionDxt1": "DXT1 (непрозрачный или 1-битный альфа)",
+    "compressionDxt3": "DXT3 (чёткие края альфа)",
+    "compressionDxt5": "DXT5 (плавный альфа)",
+    "generateMipmaps": "Генерировать mipmaps для BLP",
+    "pickOutputTitle": "Выберите папку вывода"
+  },
+  "blpview": {
+    "title": "Миниатюры проводника (BLPView)",
+    "install": "Установить",
+    "uninstall": "Удалить",
+    "restartExplorer": "Перезапустить проводник",
+    "statusError": "Не удалось прочитать статус BLPView.",
+    "installFailed": "Ошибка установки",
+    "uninstallFailed": "Ошибка удаления"
+  },
+  "conversion": {
+    "start": "Конвертация {{count}} файл(ов) ({{label}})…",
+    "outputSameFolder": "Вывод: та же папка, что и источник",
+    "noFiles": "Файлы {{format}} для этой стороны не найдены.",
+    "fileResult": "{{name}} → {{path}}",
+    "failed": "Ошибка конвертации",
+    "done": "Готово — успешно: {{succeeded}}, ошибок: {{failed}}.",
+    "scanError": "Сканирование: {{error}}",
+    "dropFailed": "Не удалось обработать перетащенные файлы",
+    "busy": "Конвертация уже выполняется — дождитесь завершения.",
+    "outputCustomFolder": "Вывод: {{path}}",
+    "labelBlpToPng": "BLP → PNG",
+    "labelPngToBlp": "PNG → BLP"
+  },
+  "about": {
+    "title": "О программе"
+  },
+  "errorBoundary": {
+    "title": "Что-то пошло не так",
+    "fallback": "Произошла непредвиденная ошибка.",
+    "retry": "Повторить"
+  }
+}
