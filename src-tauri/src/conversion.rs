@@ -357,7 +357,7 @@ mod tests {
 
     #[test]
     fn empty_output_dir_uses_source_parent() {
-        let source = PathBuf::from(r"C:\textures\icon.blp");
+        let source = PathBuf::from("textures").join("icon.blp");
         let settings = ConversionSettings {
             compression: CompressionFormat::Dxt5,
             generate_mipmaps: true,
@@ -365,7 +365,7 @@ mod tests {
         };
 
         let dir = resolve_output_dir(&source, &settings).unwrap();
-        assert_eq!(dir, PathBuf::from(r"C:\textures"));
+        assert_eq!(dir, PathBuf::from("textures"));
     }
 
     #[test]
@@ -402,11 +402,11 @@ mod tests {
 
     #[test]
     fn custom_output_dir_prefixes_parent_folder() {
-        let source = PathBuf::from(r"C:\textures\icons\spell.blp");
+        let source = PathBuf::from("textures").join("icons").join("spell.blp");
         let settings = ConversionSettings {
             compression: CompressionFormat::Dxt5,
             generate_mipmaps: true,
-            output_directory: r"D:\output".into(),
+            output_directory: "output".into(),
         };
 
         let name = output_filename(&source, &settings, "png").unwrap();
@@ -415,7 +415,7 @@ mod tests {
 
     #[test]
     fn same_folder_output_uses_stem_only() {
-        let source = PathBuf::from(r"C:\textures\icons\spell.blp");
+        let source = PathBuf::from("textures").join("icons").join("spell.blp");
         let settings = ConversionSettings {
             compression: CompressionFormat::Dxt5,
             generate_mipmaps: true,
