@@ -1,6 +1,6 @@
 [package]
 name = "blp-converter"
-version = "1.1.1"
+version = "1.1.2"
 description = "Compact WoW BLP ↔ PNG converter"
 authors = ["BLP Converter"]
 edition = "2021"

@@ -150,7 +150,7 @@ dependencies = [
 
 [[package]]
 name = "blp-converter"
-version = "1.1.0"
+version = "1.1.1"
 dependencies = [
  "blp-shell-ext",
  "image",
@@ -167,7 +167,7 @@ dependencies = [
 
 [[package]]
 name = "blp-shell-ext"
-version = "1.1.0"
+version = "1.1.1"
 dependencies = [
  "image",
  "image-blp",

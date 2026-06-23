@@ -2,6 +2,15 @@
 
 All notable changes to BLP Converter are documented in this file.
 
+## [1.1.2] - 2026-06-23
+
+### Fixed
+- **BLPView thumbnails (Windows)** — Detect broken legacy machine-wide BLPView registrations that block Explorer thumbnails.
+- **BLPView install (Windows)** — Install the thumbnail DLL beside the app executable for more reliable Explorer loading.
+- **BLPView install (Windows)** — Register full `SystemFileAssociations\.blp` metadata (`PerceivedType`, `Content Type`, `Application`).
+- **BLPView restart (Windows)** — Clear additional Explorer icon/thumbnail cache files and notify shell image updates.
+- **BLPView thumbnail provider** — Default thumbnail size when Explorer passes `cx = 0`.
+
 ## [1.1.1] - 2026-06-23
 
 ### Fixed
@@ -33,6 +42,7 @@ All notable changes to BLP Converter are documented in this file.
 ### Added
 - Initial release: BLP ↔ PNG conversion with drag-and-drop UI.
 
+[1.1.2]: https://github.com/Kkthnx/BLPConverter/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/Kkthnx/BLPConverter/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/Kkthnx/BLPConverter/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/Kkthnx/BLPConverter/releases/tag/v1.0.0

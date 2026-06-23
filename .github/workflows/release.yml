@@ -68,13 +68,13 @@ jobs:
           tagName: ${{ github.ref_name }}
           releaseName: BLP Converter ${{ github.ref_name }}
           releaseBody: |
-            ## What's new in 1.1.1
+            ## What's new in 1.1.2
 
-            - Fix BLPView Explorer thumbnails on Windows (`DisableProcessIsolation`, FileExts registration, thumb cache refresh)
-            - Grey out BLPView on Linux/macOS with an explanation
-            - Fix Windows release CI file-lock when bundling the thumbnail DLL
+            - Fix BLPView blocked by legacy machine-wide BLPView registrations
+            - Install thumbnail DLL beside the app; improved SystemFileAssociations registration
+            - Clear more Explorer cache on restart; detect broken legacy handlers in Settings
 
-            [Full changelog](https://github.com/Kkthnx/BLPConverter/blob/main/CHANGELOG.md#111---2026-06-23)
+            [Full changelog](https://github.com/Kkthnx/BLPConverter/blob/main/CHANGELOG.md#112---2026-06-23)
 
             ## Downloads
 
