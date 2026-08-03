@@ -68,13 +68,12 @@ jobs:
           tagName: ${{ github.ref_name }}
           releaseName: BLP Converter ${{ github.ref_name }}
           releaseBody: |
-            ## What's new in 1.1.2
+            ## What's new in 1.1.3
 
-            - Fix BLPView blocked by legacy machine-wide BLPView registrations
-            - Install thumbnail DLL beside the app, improved SystemFileAssociations registration
-            - Clear more Explorer cache on restart, detect broken legacy handlers in Settings
+            - Scanning and conversion run off the main thread, so large batches and dropped folders no longer freeze the window
+            - Cleaner user-facing text across all 8 languages, plus a Korean export-label typo fix
 
-            [Full changelog](https://github.com/Kkthnx/BLPConverter/blob/main/CHANGELOG.md#112---2026-06-23)
+            [Full changelog](https://github.com/Kkthnx/BLPConverter/blob/main/CHANGELOG.md#113---2026-08-03)
 
             ## Downloads
 

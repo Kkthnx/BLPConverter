@@ -2,7 +2,7 @@
 
 All notable changes to BLP Converter are documented in this file.
 
-## [Unreleased]
+## [1.1.3] - 2026-08-03
 
 ### Fixed
 - **Responsiveness**, scanning and conversion now run on a blocking worker thread instead of the main thread, so large batches and dropped folders no longer freeze the window or drag-and-drop.
@@ -50,6 +50,7 @@ All notable changes to BLP Converter are documented in this file.
 ### Added
 - Initial release, BLP and PNG conversion with drag-and-drop UI.
 
+[1.1.3]: https://github.com/Kkthnx/BLPConverter/compare/v1.1.2...v1.1.3
 [1.1.2]: https://github.com/Kkthnx/BLPConverter/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/Kkthnx/BLPConverter/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/Kkthnx/BLPConverter/compare/v1.0.0...v1.1.0
