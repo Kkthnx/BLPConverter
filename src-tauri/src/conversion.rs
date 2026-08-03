@@ -413,6 +413,57 @@ mod tests {
         assert_eq!(name, "icons_spell.png");
     }
 
+    fn temp_workdir(tag: &str) -> PathBuf {
+        let unique = format!(
+            "blpconv_{tag}_{}_{:?}",
+            std::process::id(),
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .unwrap()
+                .as_nanos()
+        );
+        let dir = std::env::temp_dir().join(unique);
+        fs::create_dir_all(&dir).unwrap();
+        dir
+    }
+
+    #[test]
+    fn png_to_blp_and_back_round_trips() {
+        let dir = temp_workdir("roundtrip");
+
+        // A 8x8 RGBA image with a partially transparent pixel.
+        let mut source = DynamicImage::new_rgba8(8, 8);
+        if let Some(rgba) = source.as_mut_rgba8() {
+            for pixel in rgba.pixels_mut() {
+                *pixel = image::Rgba([200, 100, 50, 255]);
+            }
+            rgba.get_pixel_mut(0, 0)[3] = 64;
+        }
+        let png_path = dir.join("sample.png");
+        source
+            .save_with_format(&png_path, image::ImageFormat::Png)
+            .unwrap();
+
+        let settings = ConversionSettings {
+            compression: CompressionFormat::Dxt5,
+            generate_mipmaps: true,
+            output_directory: String::new(),
+        };
+
+        let encoded = convert_png_to_blp(&png_path, &dir, &settings).unwrap();
+        assert!(encoded.output_path.exists());
+        assert_eq!(encoded.width, 8);
+        assert_eq!(encoded.height, 8);
+        assert_eq!(encoded.mipmap_count, mip_level_count(8, 8));
+
+        let decoded = convert_blp_to_png(&encoded.output_path, &dir, &settings).unwrap();
+        assert!(decoded.output_path.exists());
+        assert_eq!(decoded.width, 8);
+        assert_eq!(decoded.height, 8);
+
+        fs::remove_dir_all(&dir).ok();
+    }
+
     #[test]
     fn same_folder_output_uses_stem_only() {
         let source = PathBuf::from("textures").join("icons").join("spell.blp");
