@@ -11,7 +11,18 @@ use crate::types::{
 };
 
 #[tauri::command]
-pub fn scan_paths(paths: Vec<String>) -> ScanPathsResult {
+pub async fn scan_paths(paths: Vec<String>) -> ScanPathsResult {
+    // Scanning parses every dropped file (and walks folders) on a thread pool.
+    // Run it off the main thread so the UI and drag events stay responsive.
+    tauri::async_runtime::spawn_blocking(move || scan_paths_blocking(paths))
+        .await
+        .unwrap_or_else(|_| ScanPathsResult {
+            assets: Vec::new(),
+            errors: vec!["Scan task failed unexpectedly".into()],
+        })
+}
+
+fn scan_paths_blocking(paths: Vec<String>) -> ScanPathsResult {
     let (files, mut errors) = collect_supported_files(&paths);
 
     let assets: Vec<FileMetadata> = files
@@ -29,12 +40,21 @@ pub fn scan_paths(paths: Vec<String>) -> ScanPathsResult {
 }
 
 #[tauri::command]
-pub fn convert_paths(
+pub async fn convert_paths(
     paths: Vec<String>,
     kind: AssetKind,
     settings: ConversionSettings,
 ) -> BatchConvertResult {
-    convert_paths_batch(&paths, kind, &settings)
+    // Conversion is CPU heavy and may process whole folders. Offload it to a
+    // blocking thread so a large batch never freezes the webview.
+    tauri::async_runtime::spawn_blocking(move || convert_paths_batch(&paths, kind, &settings))
+        .await
+        .unwrap_or_else(|_| BatchConvertResult {
+            succeeded: 0,
+            failed: 0,
+            scan_errors: vec!["Conversion task failed unexpectedly".into()],
+            results: Vec::new(),
+        })
 }
 
 #[tauri::command]

@@ -2,6 +2,11 @@
 
 All notable changes to BLP Converter are documented in this file.
 
+## [Unreleased]
+
+### Fixed
+- **Responsiveness** — Scanning and conversion now run on a blocking worker thread instead of the main thread, so large batches and dropped folders no longer freeze the window or drag-and-drop.
+
 ## [1.1.2] - 2026-06-23
 
 ### Fixed
