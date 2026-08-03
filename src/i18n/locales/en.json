@@ -1,8 +1,8 @@
 {
   "app": {
     "name": "BLP Converter",
-    "tagline": "Fast BLP ↔ PNG conversion for World of Warcraft textures",
-    "description": "A lightweight desktop tool for converting Blizzard BLP texture files to PNG and back. Drop files on either side of the window — BLP on the left, PNG on the right — and conversions run in parallel. Outputs land next to your source files unless you pick a custom folder in Settings.",
+    "tagline": "Fast BLP and PNG conversion for World of Warcraft textures",
+    "description": "A lightweight desktop tool for converting Blizzard BLP texture files to PNG and back. Drop files on either side of the window, BLP on the left, PNG on the right, and conversions run in parallel. Outputs land next to your source files unless you pick a custom folder in Settings.",
     "madeBy": "Made by {{author}}",
     "dropToConvert": "Drop files to convert",
     "converting": "Converting…"
@@ -20,7 +20,7 @@
   "activity": {
     "title": "Activity",
     "clear": "Clear",
-    "empty": "Drop BLP or PNG files — outputs save next to originals by default."
+    "empty": "Drop BLP or PNG files, outputs save next to originals by default."
   },
   "settings": {
     "title": "Settings",
@@ -30,7 +30,7 @@
     "outputFolderHint": "Optional. Leave unset to save converted files next to the originals.",
     "outputDefault": "Same folder as source (default)",
     "resetOutput": "Reset to source folder",
-    "compression": "PNG → BLP Compression",
+    "compression": "PNG to BLP Compression",
     "compressionRaw": "Uncompressed / RAW",
     "compressionDxt1": "DXT1 (opaque or 1-bit alpha)",
     "compressionDxt3": "DXT3 (sharp alpha edges)",
@@ -54,15 +54,15 @@
     "start": "Converting {{count}} file(s) ({{label}})…",
     "outputSameFolder": "Output: same folder as source",
     "noFiles": "No {{format}} files found for this side.",
-    "fileResult": "{{name}} → {{path}}",
+    "fileResult": "{{name}} -> {{path}}",
     "failed": "Conversion failed",
-    "done": "Done — {{succeeded}} succeeded, {{failed}} failed.",
+    "done": "Done. {{succeeded}} succeeded, {{failed}} failed.",
     "scanError": "Scan: {{error}}",
     "dropFailed": "Failed to process dropped files",
-    "busy": "Already converting — wait for the current batch to finish.",
+    "busy": "Already converting, wait for the current batch to finish.",
     "outputCustomFolder": "Output: {{path}}",
-    "labelBlpToPng": "BLP → PNG",
-    "labelPngToBlp": "PNG → BLP"
+    "labelBlpToPng": "BLP to PNG",
+    "labelPngToBlp": "PNG to BLP"
   },
   "about": {
     "title": "About"

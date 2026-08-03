@@ -1,8 +1,8 @@
 {
   "app": {
     "name": "BLP Converter",
-    "tagline": "Schnelle BLP ↔ PNG-Konvertierung für World of Warcraft-Texturen",
-    "description": "Ein schlankes Desktop-Tool zum Konvertieren von Blizzard-BLP-Texturdateien nach PNG und zurück. Dateien auf die linke (BLP) oder rechte (PNG) Seite ziehen — die Konvertierung läuft parallel. Ausgaben landen neben den Quelldateien, sofern kein anderer Ordner in den Einstellungen gewählt wurde.",
+    "tagline": "Schnelle BLP- und PNG-Konvertierung für World of Warcraft-Texturen",
+    "description": "Ein schlankes Desktop-Tool zum Konvertieren von Blizzard-BLP-Texturdateien nach PNG und zurück. Dateien auf die linke (BLP) oder rechte (PNG) Seite ziehen, die Konvertierung läuft parallel. Ausgaben landen neben den Quelldateien, sofern kein anderer Ordner in den Einstellungen gewählt wurde.",
     "madeBy": "Erstellt von {{author}}",
     "dropToConvert": "Dateien zum Konvertieren ablegen",
     "converting": "Konvertiere…"
@@ -20,7 +20,7 @@
   "activity": {
     "title": "Aktivität",
     "clear": "Leeren",
-    "empty": "BLP- oder PNG-Dateien ablegen — Ausgaben werden standardmäßig neben den Originalen gespeichert."
+    "empty": "BLP- oder PNG-Dateien ablegen, Ausgaben werden standardmäßig neben den Originalen gespeichert."
   },
   "settings": {
     "title": "Einstellungen",
@@ -30,7 +30,7 @@
     "outputFolderHint": "Optional. Leer lassen, um neben den Originalen zu speichern.",
     "outputDefault": "Gleicher Ordner wie Quelle (Standard)",
     "resetOutput": "Auf Quellordner zurücksetzen",
-    "compression": "PNG → BLP Kompression",
+    "compression": "PNG -> BLP Kompression",
     "compressionRaw": "Unkomprimiert / RAW",
     "compressionDxt1": "DXT1 (deckend oder 1-Bit-Alpha)",
     "compressionDxt3": "DXT3 (scharfe Alphakanten)",
@@ -54,15 +54,15 @@
     "start": "Konvertiere {{count}} Datei(en) ({{label}})…",
     "outputSameFolder": "Ausgabe: gleicher Ordner wie Quelle",
     "noFiles": "Keine {{format}}-Dateien für diese Seite gefunden.",
-    "fileResult": "{{name}} → {{path}}",
+    "fileResult": "{{name}} -> {{path}}",
     "failed": "Konvertierung fehlgeschlagen",
-    "done": "Fertig — {{succeeded}} erfolgreich, {{failed}} fehlgeschlagen.",
+    "done": "Fertig. {{succeeded}} erfolgreich, {{failed}} fehlgeschlagen.",
     "scanError": "Scan: {{error}}",
     "dropFailed": "Abgelegte Dateien konnten nicht verarbeitet werden",
-    "busy": "Konvertierung läuft bereits — bitte warten.",
+    "busy": "Konvertierung läuft bereits, bitte warten.",
     "outputCustomFolder": "Ausgabe: {{path}}",
-    "labelBlpToPng": "BLP → PNG",
-    "labelPngToBlp": "PNG → BLP"
+    "labelBlpToPng": "BLP -> PNG",
+    "labelPngToBlp": "PNG -> BLP"
   },
   "about": {
     "title": "Über"

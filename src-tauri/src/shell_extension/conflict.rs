@@ -39,8 +39,8 @@ pub fn legacy_conflict_message() -> Option<&'static str> {
     if conflict.machine_handler_registered && conflict.legacy_dll_missing {
         Some(
             "A broken legacy BLPView handler is still registered in Windows (machine-wide). \
-             This can block Explorer thumbnails. Remove the old BLPView entry from \
-             Settings → Apps, or uninstall it with admin rights, then reinstall BLPView here.",
+             This can block Explorer thumbnails. Remove the old BLPView entry from the \
+             Apps list in Windows Settings, or uninstall it with admin rights, then reinstall BLPView here.",
         )
     } else {
         None

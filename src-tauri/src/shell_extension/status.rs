@@ -63,7 +63,7 @@ pub fn get_blpview_status() -> BlpViewStatus {
     let message = if let Some(conflict) = legacy_conflict_message() {
         conflict.into()
     } else if installed {
-        "BLPView is active — .blp thumbnails show in Windows Explorer. Use Large or Extra large icons view.".into()
+        "BLPView is active. .blp thumbnails show in Windows Explorer. Use Large or Extra large icons view.".into()
     } else if registry_installed && !dll_exists {
         "BLPView registry entries exist but the thumbnail DLL is missing. Reinstall BLPView.".into()
     } else if registry_installed && !isolation_ok {

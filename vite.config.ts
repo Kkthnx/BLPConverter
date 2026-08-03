@@ -18,7 +18,7 @@ export default defineConfig({
         }
       : undefined,
     watch: {
-      // Cargo writes to workspace `target/` while Vite runs — ignore it on Windows
+      // Cargo writes to workspace `target/` while Vite runs, ignore it on Windows
       // to avoid EBUSY watcher errors on locked .exe build artifacts.
       ignored: ["**/src-tauri/**", "**/target/**", "**/blp-shell-ext/**"],
     },
