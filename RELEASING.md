@@ -21,7 +21,7 @@ git push origin v1.1.0
 
 4. Open [GitHub Actions](https://github.com/Kkthnx/BLPConverter/actions) and watch the **Release** workflow.
 
-5. When it finishes, open [Releases](https://github.com/Kkthnx/BLPConverter/releases) — all platform installers are attached to that release.
+5. When it finishes, open [Releases](https://github.com/Kkthnx/BLPConverter/releases), all platform installers are attached to that release.
 
 ## Download artifacts per platform
 
@@ -35,4 +35,4 @@ BLPView (Explorer thumbnails) is included in the **Windows** build only.
 
 ## Repo settings
 
-In **Settings → Actions → General → Workflow permissions**, enable **Read and write permissions** so the workflow can publish releases.
+In **Settings > Actions > General > Workflow permissions**, enable **Read and write permissions** so the workflow can publish releases.

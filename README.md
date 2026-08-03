@@ -1,6 +1,6 @@
 # BLP Converter
 
-A compact cross-platform desktop app for converting **World of Warcraft BLP textures ↔ PNG**.
+A compact cross-platform desktop app for converting **World of Warcraft BLP textures to and from PNG**.
 
 Drop files, convert in parallel, and on Windows optionally preview `.blp` files in File Explorer with the built-in BLPView shell extension.
 
@@ -15,7 +15,7 @@ Get the latest release from [GitHub Releases](https://github.com/Kkthnx/BLPConve
 
 | Platform | Files |
 |----------|-------|
-| **Windows 10/11** | `*-setup.exe` (NSIS, recommended), `*.msi` — includes optional BLPView Explorer thumbnails |
+| **Windows 10/11** | `*-setup.exe` (NSIS, recommended), `*.msi`, includes optional BLPView Explorer thumbnails |
 | **Linux** | `*.deb`, `*.AppImage` |
 | **macOS** | `*.dmg` (Intel + Apple Silicon) |
 
@@ -36,24 +36,24 @@ GitHub Actions builds all platforms and attaches installers to the release autom
 
 ## Features
 
-- **Two-panel drag & drop** — BLP on the left → PNG, PNG on the right → BLP
-- **Batch conversion** — drop multiple files or entire folders
-- **Parallel processing** — Rust backend with Rayon
-- **Smart output** — saves next to source files by default; optional custom output folder
-- **PNG → BLP options** — RAW, DXT1, DXT3, or DXT5 compression + mipmap generation
-- **Alpha-aware encoding** — DXT formats automatically detect transparency in source PNGs
-- **Power-of-two validation** — clear errors when PNG dimensions are invalid for WoW textures
-- **8 languages** — English, Deutsch, Français, Español, Português (Brasil), Русский, 简体中文, 한국어
-- **BLPView** *(Windows only)* — optional Explorer thumbnail provider for `.blp` files
-- **Cross-platform** — Windows, Linux, and macOS via Tauri 2
+- **Two-panel drag and drop**, BLP on the left converts to PNG, PNG on the right converts to BLP
+- **Batch conversion**, drop multiple files or entire folders
+- **Parallel processing**, Rust backend with Rayon
+- **Smart output**, saves next to source files by default, with an optional custom output folder
+- **PNG to BLP options**, RAW, DXT1, DXT3, or DXT5 compression plus mipmap generation
+- **Alpha-aware encoding**, DXT formats automatically detect transparency in source PNGs
+- **Power-of-two validation**, clear errors when PNG dimensions are invalid for WoW textures
+- **8 languages**, English, Deutsch, Français, Español, Português (Brasil), Русский, 简体中文, 한국어
+- **BLPView** *(Windows only)*, optional Explorer thumbnail provider for `.blp` files
+- **Cross-platform**, Windows, Linux, and macOS via Tauri 2
 
 ---
 
 ## Usage
 
 1. Launch **BLP Converter**
-2. Drop **`.blp`** files on the **left** panel → exports PNG
-3. Drop **`.png`** files on the **right** panel → encodes BLP
+2. Drop **`.blp`** files on the **left** panel to export PNG
+3. Drop **`.png`** files on the **right** panel to encode BLP
 4. Open **Settings** (gear icon) to configure language, output folder, compression, and mipmaps
 
 Converted files are written beside the originals unless you choose a different output folder in Settings.
@@ -64,12 +64,12 @@ Converted files are written beside the originals unless you choose a different o
 |--------|----------|
 | **DXT5** | Icons, UI, smooth transparency gradients *(default)* |
 | **DXT3** | Sharp alpha edges, cut-out textures |
-| **DXT1** | Opaque textures or 1-bit punch-through alpha — smallest size |
+| **DXT1** | Opaque textures or 1-bit punch-through alpha, smallest size |
 | **RAW** | Lossless / uncompressed BGRA output |
 
-### Texture requirements (PNG → BLP)
+### Texture requirements (PNG to BLP)
 
-WoW BLP textures require **power-of-two** dimensions (e.g. 64×64, 256×512). Non-conforming images are rejected with a clear error message.
+WoW BLP textures require **power-of-two** dimensions (e.g. 64x64, 256x512). Non-conforming images are rejected with a clear error message.
 
 ---
 
@@ -115,17 +115,17 @@ On Windows, `tauri:dev` and `tauri:build` automatically build the BLPView shell 
 |-------|-------|
 | Desktop shell | [Tauri 2](https://tauri.app/) |
 | Frontend | React 19, TypeScript, Tailwind CSS, Zustand, i18next |
-| Backend | Rust — `image-blp`, `rayon`, `walkdir` |
+| Backend | Rust, `image-blp`, `rayon`, `walkdir` |
 | Shell extension | COM thumbnail provider (`blp-shell-ext`, Windows only) |
 
 ### BLP format support
 
 Conversion is powered by the [`image-blp`](https://crates.io/crates/image-blp) crate, which supports:
 
-- **BLP2** (World of Warcraft) — RAW1, RAW3, JPEG, DXT1/3/5
-- **BLP1** (Warcraft III) — read support for palettized and JPEG variants
+- **BLP2** (World of Warcraft), RAW1, RAW3, JPEG, DXT1/3/5
+- **BLP1** (Warcraft III), read support for palettized and JPEG variants
 
-BLP → PNG exports mipmap level 0 as a transparent PNG. PNG → BLP outputs BLP2 with your chosen compression.
+BLP to PNG exports mipmap level 0 as a transparent PNG. PNG to BLP outputs BLP2 with your chosen compression.
 
 ---
 
@@ -143,10 +143,10 @@ BLPConverter/
 
 ## Author
 
-Made by **[Kkthnx](https://github.com/Kkthnx)** — WoW addon developer ([KkthnxUI](https://github.com/Kkthnx-Wow/KkthnxUI) and more).
+Made by **[Kkthnx](https://github.com/Kkthnx)**, WoW addon developer ([KkthnxUI](https://github.com/Kkthnx-Wow/KkthnxUI) and more).
 
 ---
 
 ## License
 
-MIT — use freely, attribution appreciated.
+MIT, use freely, attribution appreciated.

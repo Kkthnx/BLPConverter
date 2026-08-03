@@ -74,7 +74,7 @@ fn copy_dll_with_retries(
     use std::thread::sleep;
     use std::time::Duration;
 
-    let mut last_err = io::Error::new(io::ErrorKind::Other, "copy not attempted");
+    let mut last_err = io::Error::other("copy not attempted");
 
     for attempt in 0..attempts {
         match fs::read(src).and_then(|bytes| fs::write(dst, bytes)) {

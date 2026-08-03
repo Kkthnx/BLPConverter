@@ -71,8 +71,8 @@ jobs:
             ## What's new in 1.1.2
 
             - Fix BLPView blocked by legacy machine-wide BLPView registrations
-            - Install thumbnail DLL beside the app; improved SystemFileAssociations registration
-            - Clear more Explorer cache on restart; detect broken legacy handlers in Settings
+            - Install thumbnail DLL beside the app, improved SystemFileAssociations registration
+            - Clear more Explorer cache on restart, detect broken legacy handlers in Settings
 
             [Full changelog](https://github.com/Kkthnx/BLPConverter/blob/main/CHANGELOG.md#112---2026-06-23)
 
@@ -80,7 +80,7 @@ jobs:
 
             | Platform | Installers |
             |----------|------------|
-            | **Windows** | `*-setup.exe` (recommended), `*.msi` — includes optional BLPView Explorer thumbnails |
+            | **Windows** | `*-setup.exe` (recommended), `*.msi`, includes optional BLPView Explorer thumbnails |
             | **Linux** | `*.deb`, `*.AppImage` |
             | **macOS** | `*.dmg` (Intel and Apple Silicon builds) |
 

@@ -1,4 +1,4 @@
-use std::path::PathBuf;
+use std::path::Path;
 
 use blp_shell_ext::{GuidExt, CLSID_BLP_THUMB, DEFAULT_EXT, SHELL_THUMB_HANDLER_CATID};
 use winreg::enums::HKEY_CURRENT_USER;
@@ -35,7 +35,7 @@ pub fn get_blpview_status() -> BlpViewStatus {
         .open_subkey(format!(r"Software\Classes\CLSID\{clsid}\InprocServer32"))
         .ok()
         .and_then(|key| key.get_value::<String, _>("").ok())
-        .map(|value| PathBuf::from(value) == dll_path)
+        .map(|value| Path::new(&value) == dll_path.as_path())
         .unwrap_or(false);
 
     let approved_ok = RegKeyHelper::open(
@@ -63,7 +63,7 @@ pub fn get_blpview_status() -> BlpViewStatus {
     let message = if let Some(conflict) = legacy_conflict_message() {
         conflict.into()
     } else if installed {
-        "BLPView is active — .blp thumbnails show in Windows Explorer. Use Large or Extra large icons view.".into()
+        "BLPView is active. .blp thumbnails show in Windows Explorer. Use Large or Extra large icons view.".into()
     } else if registry_installed && !dll_exists {
         "BLPView registry entries exist but the thumbnail DLL is missing. Reinstall BLPView.".into()
     } else if registry_installed && !isolation_ok {
