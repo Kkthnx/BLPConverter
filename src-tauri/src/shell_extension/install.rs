@@ -62,7 +62,7 @@ fn install_inner() -> io::Result<()> {
         ext_key.set("Content Type", "image/x-blp")?;
         ext_key.set("PerceivedType", "image")?;
         ext_key.set_default(DEFAULT_PROGID)?;
-        let _ = root.delete_subkey_all(&format!(
+        let _ = root.delete_subkey_all(format!(
             r"Software\Classes\{DEFAULT_EXT}\PersistentHandler"
         ));
     }

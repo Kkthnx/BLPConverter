@@ -11,7 +11,7 @@ function bundleShellDll(profile) {
   for (let attempt = 0; attempt < 12; attempt++) {
     try {
       writeFileSync(dst, readFileSync(src));
-      console.log(`Bundled BLPView DLL → ${dst}`);
+      console.log(`Bundled BLPView DLL to ${dst}`);
       return;
     } catch (error) {
       lastError = error;

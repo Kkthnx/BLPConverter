@@ -131,7 +131,7 @@ impl IInitializeWithStream_Impl for BlpThumbProvider_Impl {
                 data.extend_from_slice(&buf[..read as usize]);
             }
 
-            if hr == windows::core::HRESULT::from(S_FALSE) || read == 0 {
+            if hr == S_FALSE || read == 0 {
                 break;
             }
         }

@@ -1,8 +1,8 @@
 {
   "app": {
     "name": "BLP Converter",
-    "tagline": "Conversión rápida BLP ↔ PNG para texturas de World of Warcraft",
-    "description": "Herramienta de escritorio ligera para convertir texturas BLP de Blizzard a PNG y viceversa. Arrastra archivos al lado izquierdo (BLP) o derecho (PNG) — las conversiones se ejecutan en paralelo. Los archivos se guardan junto a los originales, salvo que elijas otra carpeta en Ajustes.",
+    "tagline": "Conversión rápida BLP y PNG para texturas de World of Warcraft",
+    "description": "Herramienta de escritorio ligera para convertir texturas BLP de Blizzard a PNG y viceversa. Arrastra archivos al lado izquierdo (BLP) o derecho (PNG), las conversiones se ejecutan en paralelo. Los archivos se guardan junto a los originales, salvo que elijas otra carpeta en Ajustes.",
     "madeBy": "Hecho por {{author}}",
     "dropToConvert": "Arrastra archivos para convertir",
     "converting": "Convirtiendo…"
@@ -20,7 +20,7 @@
   "activity": {
     "title": "Actividad",
     "clear": "Borrar",
-    "empty": "Arrastra archivos BLP o PNG — por defecto se guardan junto a los originales."
+    "empty": "Arrastra archivos BLP o PNG, por defecto se guardan junto a los originales."
   },
   "settings": {
     "title": "Ajustes",
@@ -30,7 +30,7 @@
     "outputFolderHint": "Opcional. Déjalo vacío para guardar junto a los originales.",
     "outputDefault": "Misma carpeta que el origen (predeterminado)",
     "resetOutput": "Restablecer carpeta de origen",
-    "compression": "Compresión PNG → BLP",
+    "compression": "Compresión PNG -> BLP",
     "compressionRaw": "Sin comprimir / RAW",
     "compressionDxt1": "DXT1 (opaco o alpha de 1 bit)",
     "compressionDxt3": "DXT3 (bordes alpha nítidos)",
@@ -54,15 +54,15 @@
     "start": "Convirtiendo {{count}} archivo(s) ({{label}})…",
     "outputSameFolder": "Salida: misma carpeta que el origen",
     "noFiles": "No se encontraron archivos {{format}} para este lado.",
-    "fileResult": "{{name}} → {{path}}",
+    "fileResult": "{{name}} -> {{path}}",
     "failed": "Error de conversión",
-    "done": "Listo — {{succeeded}} correctos, {{failed}} fallidos.",
+    "done": "Listo. {{succeeded}} correctos, {{failed}} fallidos.",
     "scanError": "Escaneo: {{error}}",
     "dropFailed": "No se pudieron procesar los archivos arrastrados",
-    "busy": "Conversión en curso — espere a que termine.",
+    "busy": "Conversión en curso, espere a que termine.",
     "outputCustomFolder": "Salida: {{path}}",
-    "labelBlpToPng": "BLP → PNG",
-    "labelPngToBlp": "PNG → BLP"
+    "labelBlpToPng": "BLP -> PNG",
+    "labelPngToBlp": "PNG -> BLP"
   },
   "about": {
     "title": "Acerca de"

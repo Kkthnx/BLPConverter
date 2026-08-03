@@ -1,7 +1,7 @@
 {
   "app": {
     "name": "BLP Converter",
-    "tagline": "월드 오브 워크래프트 텍스처용 빠른 BLP ↔ PNG 변환",
+    "tagline": "월드 오브 워크래프트 텍스처용 빠른 BLP 및 PNG 변환",
     "description": "블리자드 BLP 텍스처 파일을 PNG로 변환하거나 그 반대로 변환하는 가벼운 데스크톱 도구입니다. 왼쪽(BLP) 또는 오른쪽(PNG)에 파일을 드롭하면 병렬로 변환됩니다. 설정에서 다른 폴더를 선택하지 않으면 원본 파일 옆에 저장됩니다.",
     "madeBy": "제작: {{author}}",
     "dropToConvert": "변환할 파일을 드롭하세요",
@@ -10,7 +10,7 @@
   "panels": {
     "toPng": {
       "hint": ".blp 파일 또는 폴더 드롭",
-      "subhint": "투명 PNG보내기"
+      "subhint": "투명 PNG 내보내기"
     },
     "toBlp": {
       "hint": ".png 파일 또는 폴더 드롭",
@@ -20,7 +20,7 @@
   "activity": {
     "title": "활동",
     "clear": "지우기",
-    "empty": "BLP 또는 PNG 파일을 드롭하세요 — 기본적으로 원본 옆에 저장됩니다."
+    "empty": "BLP 또는 PNG 파일을 드롭하세요. 기본적으로 원본 옆에 저장됩니다."
   },
   "settings": {
     "title": "설정",
@@ -30,7 +30,7 @@
     "outputFolderHint": "선택 사항. 비워 두면 원본 옆에 저장됩니다.",
     "outputDefault": "원본과 같은 폴더 (기본값)",
     "resetOutput": "원본 폴더로 재설정",
-    "compression": "PNG → BLP 압축",
+    "compression": "PNG -> BLP 압축",
     "compressionRaw": "비압축 / RAW",
     "compressionDxt1": "DXT1 (불투명 또는 1비트 알파)",
     "compressionDxt3": "DXT3 (선명한 알파 가장자리)",
@@ -54,15 +54,15 @@
     "start": "{{count}}개 파일 변환 중 ({{label}})…",
     "outputSameFolder": "출력: 원본과 같은 폴더",
     "noFiles": "이 쪽에서 {{format}} 파일을 찾을 수 없습니다.",
-    "fileResult": "{{name}} → {{path}}",
+    "fileResult": "{{name}} -> {{path}}",
     "failed": "변환 실패",
-    "done": "완료 — 성공 {{succeeded}}개, 실패 {{failed}}개.",
+    "done": "완료. 성공 {{succeeded}}개, 실패 {{failed}}개.",
     "scanError": "스캔: {{error}}",
     "dropFailed": "드롭한 파일을 처리하지 못했습니다",
-    "busy": "변환 중입니다 — 현재 작업이 끝날 때까지 기다려 주세요.",
+    "busy": "변환 중입니다. 현재 작업이 끝날 때까지 기다려 주세요.",
     "outputCustomFolder": "출력: {{path}}",
-    "labelBlpToPng": "BLP → PNG",
-    "labelPngToBlp": "PNG → BLP"
+    "labelBlpToPng": "BLP -> PNG",
+    "labelPngToBlp": "PNG -> BLP"
   },
   "about": {
     "title": "정보"

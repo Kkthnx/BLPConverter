@@ -2,26 +2,34 @@
 
 All notable changes to BLP Converter are documented in this file.
 
+## [Unreleased]
+
+### Fixed
+- **Responsiveness**, scanning and conversion now run on a blocking worker thread instead of the main thread, so large batches and dropped folders no longer freeze the window or drag-and-drop.
+
+### Changed
+- Normalized user-facing text and docs to plain punctuation across all 8 locales and fixed a Korean export-label typo.
+
 ## [1.1.2] - 2026-06-23
 
 ### Fixed
-- **BLPView thumbnails (Windows)** — Detect broken legacy machine-wide BLPView registrations that block Explorer thumbnails.
-- **BLPView install (Windows)** — Install the thumbnail DLL beside the app executable for more reliable Explorer loading.
-- **BLPView install (Windows)** — Register full `SystemFileAssociations\.blp` metadata (`PerceivedType`, `Content Type`, `Application`).
-- **BLPView restart (Windows)** — Clear additional Explorer icon/thumbnail cache files and notify shell image updates.
-- **BLPView thumbnail provider** — Default thumbnail size when Explorer passes `cx = 0`.
+- **BLPView thumbnails (Windows)**, detect broken legacy machine-wide BLPView registrations that block Explorer thumbnails.
+- **BLPView install (Windows)**, install the thumbnail DLL beside the app executable for more reliable Explorer loading.
+- **BLPView install (Windows)**, register full `SystemFileAssociations\.blp` metadata (`PerceivedType`, `Content Type`, `Application`).
+- **BLPView restart (Windows)**, clear additional Explorer icon/thumbnail cache files and notify shell image updates.
+- **BLPView thumbnail provider**, default thumbnail size when Explorer passes `cx = 0`.
 
 ## [1.1.1] - 2026-06-23
 
 ### Fixed
-- **BLPView thumbnails (Windows)** — Enable `DisableProcessIsolation` in release installs so Explorer can load the thumbnail handler reliably.
-- **BLPView thumbnails (Windows)** — Register the handler under `Explorer\FileExts\.blp\ShellEx` for Windows 10/11 compatibility.
-- **BLPView thumbnails (Windows)** — Clear Explorer thumbnail cache when restarting Explorer from Settings.
-- **BLPView status (Windows)** — Detect incomplete installs (missing DLL, approval list, or isolation flag) and prompt reinstall.
-- **Release CI (Windows)** — Fix intermittent `build.rs` file-lock error when bundling `blpview_thumb.dll`.
+- **BLPView thumbnails (Windows)**, enable `DisableProcessIsolation` in release installs so Explorer can load the thumbnail handler reliably.
+- **BLPView thumbnails (Windows)**, register the handler under `Explorer\FileExts\.blp\ShellEx` for Windows 10/11 compatibility.
+- **BLPView thumbnails (Windows)**, clear Explorer thumbnail cache when restarting Explorer from Settings.
+- **BLPView status (Windows)**, detect incomplete installs (missing DLL, approval list, or isolation flag) and prompt reinstall.
+- **Release CI (Windows)**, fix intermittent `build.rs` file-lock error when bundling `blpview_thumb.dll`.
 
 ### Changed
-- **BLPView (Linux/macOS)** — Show the Settings section greyed out with a translated explanation instead of hiding it.
+- **BLPView (Linux/macOS)**, show the Settings section greyed out with a translated explanation instead of hiding it.
 
 ## [1.1.0] - 2026-06-23
 
@@ -40,7 +48,7 @@ All notable changes to BLP Converter are documented in this file.
 ## [1.0.0] - 2026-06-23
 
 ### Added
-- Initial release: BLP ↔ PNG conversion with drag-and-drop UI.
+- Initial release, BLP and PNG conversion with drag-and-drop UI.
 
 [1.1.2]: https://github.com/Kkthnx/BLPConverter/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/Kkthnx/BLPConverter/compare/v1.1.0...v1.1.1
