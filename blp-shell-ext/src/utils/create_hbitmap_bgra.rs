@@ -8,7 +8,12 @@ use windows::Win32::Graphics::Gdi::{
 
 const LCS_SRGB_U32: u32 = 0x7352_4742;
 
-pub unsafe fn create_hbitmap_bgra_premul(
+/// Build a 32bpp top-down BGRA DIB section for an `WTSAT_ARGB` thumbnail.
+///
+/// The pixels are straight (non-premultiplied) BGRA. That matches the Windows
+/// SDK RecipeThumbnailProvider sample, which hands the shell a `32bppBGRA`
+/// bitmap with `WTSAT_ARGB` and does not premultiply. Do not premultiply here.
+pub unsafe fn create_hbitmap_bgra(
     width: i32,
     height: i32,
     pixels_bgra: &[u8],

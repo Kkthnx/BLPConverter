@@ -41,8 +41,6 @@ fn clear_thumbnail_cache() {
 }
 
 pub fn restart_explorer() -> Result<(), String> {
-    clear_thumbnail_cache();
-
     let _ = Command::new("taskkill")
         .args(["/F", "/IM", "explorer.exe"])
         .stdin(Stdio::null())
@@ -51,6 +49,10 @@ pub fn restart_explorer() -> Result<(), String> {
         .status();
 
     sleep(Duration::from_millis(400));
+
+    // Clear the cache only after Explorer is down. While it is running it holds
+    // thumbcache_*.db open, so deleting earlier just fails silently.
+    clear_thumbnail_cache();
 
     Command::new("explorer.exe")
         .stdin(Stdio::null())
