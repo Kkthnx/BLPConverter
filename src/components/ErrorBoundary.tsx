@@ -31,7 +31,7 @@ class ErrorBoundaryBase extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         <div className="flex h-full flex-col items-center justify-center gap-4 bg-workspace-bg p-8">
-          <AlertTriangle className="h-12 w-12 text-workspace-cyan" />
+          <AlertTriangle className="h-12 w-12 text-workspace-accent" />
           <h1 className="text-xl font-semibold text-white">
             {t("errorBoundary.title")}
           </h1>
@@ -41,7 +41,7 @@ class ErrorBoundaryBase extends Component<Props, State> {
           <button
             type="button"
             onClick={() => this.setState({ hasError: false, error: null })}
-            className="rounded-lg border border-workspace-cyan/40 bg-workspace-cyan/10 px-4 py-2 text-sm text-workspace-cyan transition hover:bg-workspace-cyan/20"
+            className="rounded-lg border border-workspace-accent/40 bg-workspace-accent/10 px-4 py-2 text-sm text-workspace-accent transition hover:bg-workspace-accent/20"
           >
             {t("errorBoundary.retry")}
           </button>

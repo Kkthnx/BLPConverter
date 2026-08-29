@@ -64,6 +64,7 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: "blp-converter-settings",
+      version: 1,
       partialize: (state) => ({ settings: state.settings }),
     },
   ),

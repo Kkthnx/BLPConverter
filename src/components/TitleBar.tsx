@@ -29,7 +29,7 @@ export function TitleBar() {
 
       <div className="flex items-center gap-2">
         {isConverting && (
-          <span className="text-[10px] font-medium text-workspace-cyan animate-pulse">
+          <span className="text-[10px] font-medium text-workspace-accent animate-pulse">
             {t("app.converting")}
           </span>
         )}
@@ -44,7 +44,7 @@ export function TitleBar() {
         <button
           type="button"
           onClick={() => setSettingsOpen(true)}
-          className="flex h-7 w-7 items-center justify-center rounded-md border border-workspace-border text-workspace-silver-muted transition hover:border-workspace-cyan/40 hover:text-workspace-cyan"
+          className="flex h-7 w-7 items-center justify-center rounded-md border border-workspace-border text-workspace-silver-muted transition hover:border-workspace-accent/40 hover:text-workspace-accent"
           aria-label={t("settings.title")}
         >
           <Settings className="h-3.5 w-3.5" />

@@ -5,29 +5,35 @@ export default {
     extend: {
       colors: {
         workspace: {
-          bg: "#0a0b0d",
-          surface: "#12141a",
-          panel: "#181b22",
-          elevated: "#1e222b",
-          border: "#2a2f3a",
-          silver: "#9ca3af",
-          "silver-muted": "#6b7280",
-          cyan: "#00e5ff",
-          "cyan-dim": "#00b8d4",
-          "cyan-glow": "rgba(0, 229, 255, 0.15)",
+          bg: "#0a0c10",
+          surface: "#10141b",
+          panel: "#161b24",
+          elevated: "#1d2430",
+          border: "#2a3140",
+          silver: "#aab3c1",
+          "silver-muted": "#7c8798",
+          accent: "#3b9ef5",
+          "accent-dim": "#2b7ad0",
+          "accent-bright": "#6bb6ff",
+          "accent-glow": "rgba(59, 158, 245, 0.16)",
         },
       },
       boxShadow: {
-        cyan: "0 0 20px rgba(0, 229, 255, 0.25)",
-        panel: "0 4px 24px rgba(0, 0, 0, 0.4)",
+        accent: "0 0 20px rgba(59, 158, 245, 0.22)",
+        panel: "0 4px 24px rgba(0, 0, 0, 0.45)",
       },
       animation: {
-        "pulse-cyan": "pulse-cyan 2s ease-in-out infinite",
+        "pulse-accent": "pulse-accent 2s ease-in-out infinite",
+        indeterminate: "indeterminate 1.1s ease-in-out infinite",
       },
       keyframes: {
-        "pulse-cyan": {
+        "pulse-accent": {
           "0%, 100%": { opacity: "1" },
-          "50%": { opacity: "0.6" },
+          "50%": { opacity: "0.55" },
+        },
+        indeterminate: {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(400%)" },
         },
       },
     },

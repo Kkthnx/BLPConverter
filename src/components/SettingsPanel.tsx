@@ -62,7 +62,7 @@ export function SettingsPanel() {
       >
         <div className="flex items-center justify-between border-b border-workspace-border px-4 py-2.5">
           <div className="flex items-center gap-2">
-            <Settings className="h-4 w-4 text-workspace-cyan" />
+            <Settings className="h-4 w-4 text-workspace-accent" />
             <h2 className="text-sm font-semibold text-white">
               {t("settings.title")}
             </h2>
@@ -86,7 +86,7 @@ export function SettingsPanel() {
               onChange={(e) =>
                 handleLocaleChange(e.target.value as SupportedLocale)
               }
-              className="w-full rounded-lg border border-workspace-border bg-workspace-surface px-3 py-2 text-xs text-workspace-silver outline-none transition focus:border-workspace-cyan/40"
+              className="w-full rounded-lg border border-workspace-border bg-workspace-surface px-3 py-2 text-xs text-workspace-silver outline-none transition focus:border-workspace-accent/40"
             >
               {SUPPORTED_LOCALES.map((locale) => (
                 <option key={locale.code} value={locale.code}>
@@ -106,7 +106,7 @@ export function SettingsPanel() {
             <button
               type="button"
               onClick={handlePickOutput}
-              className="w-full rounded-lg border border-workspace-border px-3 py-2 text-left text-xs text-workspace-silver transition hover:border-workspace-cyan/40"
+              className="w-full rounded-lg border border-workspace-border px-3 py-2 text-left text-xs text-workspace-silver transition hover:border-workspace-accent/40"
             >
               {settings.outputDirectory || t("settings.outputDefault")}
             </button>
@@ -114,7 +114,7 @@ export function SettingsPanel() {
               <button
                 type="button"
                 onClick={clearOutput}
-                className="mt-1.5 text-[10px] text-workspace-silver-muted transition hover:text-workspace-cyan"
+                className="mt-1.5 text-[10px] text-workspace-silver-muted transition hover:text-workspace-accent"
               >
                 {t("settings.resetOutput")}
               </button>
@@ -131,7 +131,7 @@ export function SettingsPanel() {
                   key={option.value}
                   className={`flex cursor-pointer items-center gap-2 rounded-md border px-2.5 py-2 text-xs transition ${
                     settings.compression === option.value
-                      ? "border-workspace-cyan/50 bg-workspace-cyan/10 text-workspace-cyan"
+                      ? "border-workspace-accent/50 bg-workspace-accent/10 text-workspace-accent"
                       : "border-workspace-border text-workspace-silver hover:border-workspace-silver/30"
                   }`}
                 >
@@ -143,7 +143,7 @@ export function SettingsPanel() {
                     onChange={() =>
                       updateSettings({ compression: option.value })
                     }
-                    className="accent-workspace-cyan"
+                    className="accent-workspace-accent"
                   />
                   {t(option.labelKey)}
                 </label>
@@ -159,7 +159,7 @@ export function SettingsPanel() {
                 onChange={(e) =>
                   updateSettings({ generateMipmaps: e.target.checked })
                 }
-                className="accent-workspace-cyan"
+                className="accent-workspace-accent"
               />
               {t("settings.generateMipmaps")}
             </label>

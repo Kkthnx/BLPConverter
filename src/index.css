@@ -19,10 +19,22 @@
   body {
     @apply bg-workspace-bg text-gray-100 antialiased;
     font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Keyboard focus stays visible, pointer focus does not add a ring. */
+  :focus-visible {
+    outline: none;
+    @apply ring-2 ring-workspace-accent/60 ring-offset-1 ring-offset-workspace-bg;
+  }
+
+  ::selection {
+    background: rgba(59, 158, 245, 0.3);
   }
 
   ::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
+    height: 8px;
   }
 
   ::-webkit-scrollbar-track {
@@ -31,5 +43,9 @@
 
   ::-webkit-scrollbar-thumb {
     @apply rounded-full bg-workspace-border;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-workspace-silver-muted;
   }
 }

@@ -98,7 +98,7 @@ export function BlpViewSection() {
               type="button"
               disabled={controlsDisabled}
               onClick={handleInstall}
-              className="rounded-md bg-workspace-cyan/15 px-2.5 py-1.5 text-[11px] font-medium text-workspace-cyan ring-1 ring-workspace-cyan/30 disabled:cursor-not-allowed disabled:opacity-40"
+              className="rounded-md bg-workspace-accent/15 px-2.5 py-1.5 text-[11px] font-medium text-workspace-accent ring-1 ring-workspace-accent/30 disabled:cursor-not-allowed disabled:opacity-40"
             >
               {t("blpview.install")}
             </button>
@@ -127,7 +127,7 @@ export function BlpViewSection() {
                 );
               }
             }}
-            className="rounded-md border border-workspace-border px-2.5 py-1.5 text-[11px] text-workspace-silver-muted hover:text-workspace-cyan disabled:cursor-not-allowed disabled:opacity-40"
+            className="rounded-md border border-workspace-border px-2.5 py-1.5 text-[11px] text-workspace-silver-muted hover:text-workspace-accent disabled:cursor-not-allowed disabled:opacity-40"
           >
             <RefreshCw className="mr-1 inline h-3 w-3" />
             {t("blpview.restartExplorer")}
@@ -135,7 +135,7 @@ export function BlpViewSection() {
         </div>
 
         {feedback && (
-          <p className="text-[10px] text-workspace-cyan">{feedback}</p>
+          <p className="text-[10px] text-workspace-accent">{feedback}</p>
         )}
       </div>
     </section>
