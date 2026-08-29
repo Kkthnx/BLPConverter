@@ -58,19 +58,21 @@ impl IInitializeWithItem_Impl for BlpThumbProvider_Impl {
         psi: windows::core::Ref<'_, IShellItem>,
         _grf_mode: u32,
     ) -> windows::core::Result<()> {
-        unsafe {
-            let item = psi.ok()?;
-            let pw: PWSTR = item.GetDisplayName(SIGDN_FILESYSPATH)?;
-            if pw.is_null() {
-                return Err(windows::core::Error::from(E_FAIL));
+        crate::catch_com(|| {
+            unsafe {
+                let item = psi.ok()?;
+                let pw: PWSTR = item.GetDisplayName(SIGDN_FILESYSPATH)?;
+                if pw.is_null() {
+                    return Err(windows::core::Error::from(E_FAIL));
+                }
+                let path = widestring::U16CStr::from_ptr_str(pw.0).to_string_lossy();
+                CoTaskMemFree(Some(pw.0 as *const _));
+                let mut state = self.lock_state()?;
+                state.path_utf8 = Some(path);
+                state.stream_data = None;
             }
-            let path = widestring::U16CStr::from_ptr_str(pw.0).to_string_lossy();
-            CoTaskMemFree(Some(pw.0 as *const _));
-            let mut state = self.lock_state()?;
-            state.path_utf8 = Some(path);
-            state.stream_data = None;
-        }
-        Ok(())
+            Ok(())
+        })
     }
 }
 
@@ -80,16 +82,19 @@ impl IInitializeWithFile_Impl for BlpThumbProvider_Impl {
         psz_file_path: &PCWSTR,
         _grf_mode: u32,
     ) -> windows::core::Result<()> {
-        if psz_file_path.is_null() || psz_file_path.0.is_null() {
-            return Err(windows::core::Error::from(E_FAIL));
-        }
+        crate::catch_com(|| {
+            if psz_file_path.is_null() || psz_file_path.0.is_null() {
+                return Err(windows::core::Error::from(E_FAIL));
+            }
 
-        let path =
-            unsafe { widestring::U16CStr::from_ptr_str(psz_file_path.0).to_string_lossy() };
-        let mut state = self.lock_state()?;
-        state.path_utf8 = Some(path);
-        state.stream_data = None;
-        Ok(())
+            let path = unsafe {
+                widestring::U16CStr::from_ptr_str(psz_file_path.0).to_string_lossy()
+            };
+            let mut state = self.lock_state()?;
+            state.path_utf8 = Some(path);
+            state.stream_data = None;
+            Ok(())
+        })
     }
 }
 
@@ -101,49 +106,51 @@ impl IInitializeWithStream_Impl for BlpThumbProvider_Impl {
     ) -> windows::core::Result<()> {
         use windows::Win32::Foundation::S_FALSE;
 
-        let stream = pstream.ok()?;
-        unsafe {
-            stream.Seek(0, STREAM_SEEK_SET, None)?;
-        }
-
-        let mut data = Vec::new();
-        let seq: ISequentialStream = stream.cast()?;
-        let mut buf = [0u8; 8192];
-
-        loop {
-            let mut read = 0u32;
-            let hr = unsafe {
-                seq.Read(
-                    buf.as_mut_ptr() as *mut _,
-                    buf.len() as u32,
-                    Some(&mut read),
-                )
-            };
-
-            if hr.is_err() {
-                return Err(windows::core::Error::from(hr));
+        crate::catch_com(|| {
+            let stream = pstream.ok()?;
+            unsafe {
+                stream.Seek(0, STREAM_SEEK_SET, None)?;
             }
 
-            if read > 0 {
-                if data.len() + read as usize > MAX_STREAM_BYTES {
-                    return Err(windows::core::Error::from(E_FAIL));
+            let mut data = Vec::new();
+            let seq: ISequentialStream = stream.cast()?;
+            let mut buf = [0u8; 8192];
+
+            loop {
+                let mut read = 0u32;
+                let hr = unsafe {
+                    seq.Read(
+                        buf.as_mut_ptr() as *mut _,
+                        buf.len() as u32,
+                        Some(&mut read),
+                    )
+                };
+
+                if hr.is_err() {
+                    return Err(windows::core::Error::from(hr));
                 }
-                data.extend_from_slice(&buf[..read as usize]);
+
+                if read > 0 {
+                    if data.len() + read as usize > MAX_STREAM_BYTES {
+                        return Err(windows::core::Error::from(E_FAIL));
+                    }
+                    data.extend_from_slice(&buf[..read as usize]);
+                }
+
+                if hr == S_FALSE || read == 0 {
+                    break;
+                }
             }
 
-            if hr == S_FALSE || read == 0 {
-                break;
+            if data.is_empty() {
+                return Err(windows::core::Error::from(E_FAIL));
             }
-        }
 
-        if data.is_empty() {
-            return Err(windows::core::Error::from(E_FAIL));
-        }
-
-        let mut state = self.lock_state()?;
-        state.path_utf8 = None;
-        state.stream_data = Some(Arc::from(data));
-        Ok(())
+            let mut state = self.lock_state()?;
+            state.path_utf8 = None;
+            state.stream_data = Some(Arc::from(data));
+            Ok(())
+        })
     }
 }
 
@@ -154,47 +161,49 @@ impl IThumbnailProvider_Impl for BlpThumbProvider_Impl {
         phbmp: *mut HBITMAP,
         pdwalpha: *mut WTS_ALPHATYPE,
     ) -> windows::core::Result<()> {
-        if phbmp.is_null() || pdwalpha.is_null() {
-            return Err(windows::core::Error::from(E_POINTER));
-        }
-
-        let (data_arc, path_opt) = {
-            let state = self.lock_state()?;
-            (state.stream_data.clone(), state.path_utf8.clone())
-        };
-
-        let data: Arc<[u8]> = if let Some(buffer) = data_arc {
-            buffer
-        } else {
-            let path = path_opt.ok_or_else(|| windows::core::Error::from(E_FAIL))?;
-            Arc::from(
-                std::fs::read(&path)
-                    .map_err(|_| windows::core::Error::from(E_FAIL))?,
-            )
-        };
-
-        let (width, height, rgba) =
-            decode_blp_rgba(&data).map_err(|_| windows::core::Error::from(E_FAIL))?;
-
-        let (target_w, target_h, rgba_fit) = {
-            let max_dim = if cx > 0 { cx } else { 256 };
-            if width.max(height) > max_dim {
-                resize_fit_rgba(&rgba, width, height, max_dim)
-            } else {
-                (width, height, rgba)
+        crate::catch_com(|| {
+            if phbmp.is_null() || pdwalpha.is_null() {
+                return Err(windows::core::Error::from(E_POINTER));
             }
-        };
 
-        let bgra = rgba_to_bgra(&rgba_fit);
-        let hbmp = unsafe {
-            create_hbitmap_bgra(target_w as i32, target_h as i32, &bgra)?
-        };
+            let (data_arc, path_opt) = {
+                let state = self.lock_state()?;
+                (state.stream_data.clone(), state.path_utf8.clone())
+            };
 
-        unsafe {
-            *phbmp = hbmp;
-            *pdwalpha = WTSAT_ARGB;
-        }
+            let data: Arc<[u8]> = if let Some(buffer) = data_arc {
+                buffer
+            } else {
+                let path = path_opt.ok_or_else(|| windows::core::Error::from(E_FAIL))?;
+                Arc::from(
+                    std::fs::read(&path)
+                        .map_err(|_| windows::core::Error::from(E_FAIL))?,
+                )
+            };
 
-        Ok(())
+            let (width, height, rgba) =
+                decode_blp_rgba(&data).map_err(|_| windows::core::Error::from(E_FAIL))?;
+
+            let (target_w, target_h, rgba_fit) = {
+                let max_dim = if cx > 0 { cx } else { 256 };
+                if width.max(height) > max_dim {
+                    resize_fit_rgba(&rgba, width, height, max_dim)
+                } else {
+                    (width, height, rgba)
+                }
+            };
+
+            let bgra = rgba_to_bgra(&rgba_fit);
+            let hbmp = unsafe {
+                create_hbitmap_bgra(target_w as i32, target_h as i32, &bgra)?
+            };
+
+            unsafe {
+                *phbmp = hbmp;
+                *pdwalpha = WTSAT_ARGB;
+            }
+
+            Ok(())
+        })
     }
 }

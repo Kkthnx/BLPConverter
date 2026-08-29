@@ -1,6 +1,6 @@
 [package]
 name = "blp-shell-ext"
-version = "1.2.0"
+version = "1.2.1"
 edition = "2021"
 description = "BLPView Windows Explorer thumbnail shell extension"
 authors = ["Kkthnx"]
