@@ -2,7 +2,7 @@
 
 All notable changes to BLP Converter are documented in this file.
 
-## [Unreleased]
+## [1.2.0] - 2026-08-29
 
 ### Changed
 - Relicensed to All Rights Reserved, updated the LICENSE file, README, and crate and package metadata.
@@ -64,6 +64,7 @@ All notable changes to BLP Converter are documented in this file.
 ### Added
 - Initial release, BLP and PNG conversion with drag-and-drop UI.
 
+[1.2.0]: https://github.com/Kkthnx/BLPConverter/compare/v1.1.3...v1.2.0
 [1.1.3]: https://github.com/Kkthnx/BLPConverter/compare/v1.1.2...v1.1.3
 [1.1.2]: https://github.com/Kkthnx/BLPConverter/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/Kkthnx/BLPConverter/compare/v1.1.0...v1.1.1
