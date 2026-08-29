@@ -3,7 +3,7 @@ use std::sync::{Arc, Mutex};
 use windows_implement::implement;
 
 use crate::decode::decode_blp_rgba;
-use crate::utils::{create_hbitmap_bgra_premul, resize_fit_rgba, rgba_to_bgra};
+use crate::utils::{create_hbitmap_bgra, resize_fit_rgba, rgba_to_bgra};
 use crate::{ProviderState, DLL_LOCK_COUNT};
 
 use windows::Win32::Foundation::{E_FAIL, E_POINTER};
@@ -187,7 +187,7 @@ impl IThumbnailProvider_Impl for BlpThumbProvider_Impl {
 
         let bgra = rgba_to_bgra(&rgba_fit);
         let hbmp = unsafe {
-            create_hbitmap_bgra_premul(target_w as i32, target_h as i32, &bgra)?
+            create_hbitmap_bgra(target_w as i32, target_h as i32, &bgra)?
         };
 
         unsafe {
