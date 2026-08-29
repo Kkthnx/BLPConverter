@@ -68,13 +68,12 @@ jobs:
           tagName: ${{ github.ref_name }}
           releaseName: BLP Converter ${{ github.ref_name }}
           releaseBody: |
-            ## What's new in 1.2.0
+            ## What's new in 1.2.1
 
-            - Refreshed blue and silver interface with better text contrast and matching app icons
-            - Indeterminate progress bar while a batch converts, plus visible keyboard focus rings
-            - Relicensed to All Rights Reserved
+            - BLPView (Windows), Restart Explorer now actually clears the thumbnail cache so refreshes take effect
+            - BLPView (Windows), the thumbnail provider is panic-safe, a malformed .blp can no longer take down Explorer
 
-            [Full changelog](https://github.com/Kkthnx/BLPConverter/blob/main/CHANGELOG.md#120---2026-08-29)
+            [Full changelog](https://github.com/Kkthnx/BLPConverter/blob/main/CHANGELOG.md#121---2026-08-29)
 
             ## Downloads
 

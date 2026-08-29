@@ -16,31 +16,33 @@ pub extern "system" fn DllGetClassObject(
     riid: *const GUID,
     ppv: *mut *mut c_void,
 ) -> HRESULT {
-    if ppv.is_null() || rclsid.is_null() || riid.is_null() {
-        return E_POINTER;
-    }
-
-    unsafe {
-        *ppv = null_mut();
-    }
-
-    let requested = unsafe { *rclsid };
-    if requested != CLSID_BLP_THUMB {
-        return CLASS_E_CLASSNOTAVAILABLE;
-    }
-
-    let factory = BlpClassFactory::new();
-    let class_factory: IClassFactory = factory.into();
-    let requested_iid = unsafe { *riid };
-
-    if requested_iid == IClassFactory::IID || requested_iid == IUnknown::IID {
-        unsafe {
-            *ppv = class_factory.into_raw();
+    crate::catch_hr(|| {
+        if ppv.is_null() || rclsid.is_null() || riid.is_null() {
+            return E_POINTER;
         }
-        S_OK
-    } else {
-        E_NOINTERFACE
-    }
+
+        unsafe {
+            *ppv = null_mut();
+        }
+
+        let requested = unsafe { *rclsid };
+        if requested != CLSID_BLP_THUMB {
+            return CLASS_E_CLASSNOTAVAILABLE;
+        }
+
+        let factory = BlpClassFactory::new();
+        let class_factory: IClassFactory = factory.into();
+        let requested_iid = unsafe { *riid };
+
+        if requested_iid == IClassFactory::IID || requested_iid == IUnknown::IID {
+            unsafe {
+                *ppv = class_factory.into_raw();
+            }
+            S_OK
+        } else {
+            E_NOINTERFACE
+        }
+    })
 }
 
 #[no_mangle]

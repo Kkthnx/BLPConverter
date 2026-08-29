@@ -28,6 +28,7 @@ impl IClassFactory_Impl for BlpClassFactory_Impl {
         riid: *const GUID,
         ppv: *mut *mut c_void,
     ) -> windows::core::Result<()> {
+        crate::catch_com(|| {
         if ppv.is_null() || riid.is_null() {
             return Err(windows::core::Error::from(E_POINTER));
         }
@@ -63,6 +64,7 @@ impl IClassFactory_Impl for BlpClassFactory_Impl {
         }
 
         Err(windows::core::Error::from(E_NOINTERFACE))
+        })
     }
 
     fn LockServer(&self, f_lock: BOOL) -> windows::core::Result<()> {

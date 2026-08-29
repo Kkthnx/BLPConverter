@@ -2,6 +2,14 @@
 
 All notable changes to BLP Converter are documented in this file.
 
+## [1.2.1] - 2026-08-29
+
+### Fixed
+- **BLPView (Windows)**, Restart Explorer now clears the thumbnail cache after Explorer is down, so refreshing thumbnails actually takes effect. It was clearing while Explorer still held the cache files open.
+
+### Changed
+- **BLPView (Windows)**, the thumbnail provider now catches panics at the COM boundary and returns an error instead of unwinding, so a malformed .blp cannot take down Explorer. Release builds use unwind to support this.
+
 ## [1.2.0] - 2026-08-29
 
 ### Changed
@@ -64,6 +72,7 @@ All notable changes to BLP Converter are documented in this file.
 ### Added
 - Initial release, BLP and PNG conversion with drag-and-drop UI.
 
+[1.2.1]: https://github.com/Kkthnx/BLPConverter/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/Kkthnx/BLPConverter/compare/v1.1.3...v1.2.0
 [1.1.3]: https://github.com/Kkthnx/BLPConverter/compare/v1.1.2...v1.1.3
 [1.1.2]: https://github.com/Kkthnx/BLPConverter/compare/v1.1.1...v1.1.2
