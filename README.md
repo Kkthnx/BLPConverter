@@ -5,7 +5,7 @@ A compact cross-platform desktop app for converting **World of Warcraft BLP text
 Drop files, convert in parallel, and on Windows optionally preview `.blp` files in File Explorer with the built-in BLPView shell extension.
 
 [![Release](https://img.shields.io/github/v/release/Kkthnx/BLPConverter?style=flat-square&label=release)](https://github.com/Kkthnx/BLPConverter/releases/latest)
-[![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](#license)
+[![License](https://img.shields.io/badge/license-All%20Rights%20Reserved-blue?style=flat-square)](#license)
 
 ---
 
@@ -149,4 +149,6 @@ Made by **[Kkthnx](https://github.com/Kkthnx)**, WoW addon developer ([KkthnxUI]
 
 ## License
 
-MIT, use freely, attribution appreciated.
+All Rights Reserved. Copyright (c) 2026 Kkthnx. See [LICENSE](LICENSE) for details.
+
+You can download and run the official released builds for personal use. The source is here for reference, not for redistribution or reuse without written permission.

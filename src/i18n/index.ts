@@ -42,6 +42,8 @@ function detectLocale(): SupportedLocale {
   return byPrefix?.code ?? "en";
 }
 
+const initialLocale = detectLocale();
+
 void i18n.use(initReactI18next).init({
   resources: {
     en: { translation: en },
@@ -53,15 +55,25 @@ void i18n.use(initReactI18next).init({
     "zh-CN": { translation: zhCN },
     ko: { translation: ko },
   },
-  lng: detectLocale(),
+  lng: initialLocale,
   fallbackLng: "en",
   interpolation: {
     escapeValue: false,
   },
 });
 
+// Keep the document language attribute in sync for accessibility tools.
+syncDocumentLang(initialLocale);
+
+function syncDocumentLang(locale: SupportedLocale): void {
+  if (typeof document !== "undefined") {
+    document.documentElement.lang = locale;
+  }
+}
+
 export function setAppLocale(locale: SupportedLocale): void {
   localStorage.setItem(STORAGE_KEY, locale);
+  syncDocumentLang(locale);
   void i18n.changeLanguage(locale);
 }
 

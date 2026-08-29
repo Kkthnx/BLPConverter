@@ -2,6 +2,20 @@
 
 All notable changes to BLP Converter are documented in this file.
 
+## [Unreleased]
+
+### Changed
+- Relicensed to All Rights Reserved, updated the LICENSE file, README, and crate and package metadata.
+- Refreshed the interface to a blue and silver palette with better text contrast, and regenerated every app icon to match.
+
+### Added
+- Indeterminate progress bar in the header while a batch is converting.
+- Visible keyboard focus rings for better accessibility.
+
+### Fixed
+- Keep the document language attribute in sync with the selected locale.
+- Version the saved settings store so future setting changes can migrate cleanly.
+
 ## [1.1.3] - 2026-08-03
 
 ### Fixed
