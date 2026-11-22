@@ -7,7 +7,7 @@ use winreg::RegKey;
 use crate::types::BlpViewStatus;
 use super::conflict::legacy_conflict_message;
 use super::paths::expected_dll_path;
-use super::reg_helpers::RegKeyHelper;
+use super::reg_helpers::{machine_classes_writable, RegKeyHelper};
 
 pub fn get_blpview_status() -> BlpViewStatus {
     let dll_path = expected_dll_path();
@@ -53,12 +53,25 @@ pub fn get_blpview_status() -> BlpViewStatus {
         .map(|value| value != 0)
         .unwrap_or(false);
 
+    // When running elevated, Explorer most likely is too, and it then ignores
+    // the per-user class. Require the per-machine copy in that case.
+    let machine_class_ok = match machine_classes_writable() {
+        None => true,
+        Some(machine) => machine
+            .open_subkey(format!(r"Software\Classes\CLSID\{clsid}\InprocServer32"))
+            .ok()
+            .and_then(|key| key.get_value::<String, _>("").ok())
+            .map(|value| Path::new(&value) == dll_path.as_path())
+            .unwrap_or(false),
+    };
+
     let installed = registry_installed
         && dll_exists
         && shellex_ok
         && dll_path_matches
         && approved_ok
-        && isolation_ok;
+        && isolation_ok
+        && machine_class_ok;
 
     let message = if let Some(conflict) = legacy_conflict_message() {
         conflict.into()
@@ -68,6 +81,8 @@ pub fn get_blpview_status() -> BlpViewStatus {
         "BLPView registry entries exist but the thumbnail DLL is missing. Reinstall BLPView.".into()
     } else if registry_installed && !isolation_ok {
         "BLPView needs a reinstall to refresh Explorer thumbnail settings.".into()
+    } else if registry_installed && !machine_class_ok {
+        "This account runs apps as administrator, so Explorer ignores the per-user registration. Reinstall BLPView to register it for the whole machine.".into()
     } else if registry_installed && (!shellex_ok || !dll_path_matches || !approved_ok) {
         "BLPView registration looks incomplete. Reinstall BLPView.".into()
     } else {

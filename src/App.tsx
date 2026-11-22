@@ -24,7 +24,7 @@ function App() {
         aria-hidden={!isConverting}
       >
         {isConverting && (
-          <div className="h-full w-1/4 rounded-full bg-workspace-accent shadow-accent animate-indeterminate" />
+          <div className="h-full w-1/4 rounded-full bg-workspace-accent shadow-accent motion-safe:animate-indeterminate motion-reduce:w-full forced-colors:bg-[Highlight]" />
         )}
       </div>
 

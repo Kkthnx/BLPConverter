@@ -15,6 +15,18 @@ export function BlpViewSection() {
   const [loading, setLoading] = useState(false);
   const [feedback, setFeedback] = useState<string | null>(null);
 
+  // Restarting Explorer closes every open Explorer window, so ask first.
+  const confirmAndRestart = useCallback(async () => {
+    const { ask } = await import("@tauri-apps/plugin-dialog");
+    const confirmed = await ask(t("blpview.restartConfirm"), {
+      title: t("blpview.restartExplorer"),
+      kind: "warning",
+    });
+    if (confirmed) {
+      await restartExplorer();
+    }
+  }, [t]);
+
   const refreshStatus = useCallback(async () => {
     try {
       setStatus(await getBlpViewStatus());
@@ -35,7 +47,7 @@ export function BlpViewSection() {
       setFeedback(result.message);
       await refreshStatus();
       if (result.restartRequired) {
-        await restartExplorer();
+        await confirmAndRestart();
       }
     } catch (err) {
       setFeedback(
@@ -54,7 +66,7 @@ export function BlpViewSection() {
       setFeedback(result.message);
       await refreshStatus();
       if (result.restartRequired) {
-        await restartExplorer();
+        await confirmAndRestart();
       }
     } catch (err) {
       setFeedback(
@@ -70,7 +82,7 @@ export function BlpViewSection() {
 
   return (
     <section>
-      <h3 className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-workspace-silver-muted">
+      <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-workspace-silver-muted">
         {t("blpview.title")}
       </h3>
 
@@ -85,7 +97,7 @@ export function BlpViewSection() {
           ) : (
             <Monitor className="mt-0.5 h-3.5 w-3.5 shrink-0 text-workspace-silver-muted" />
           )}
-          <p className="text-[11px] leading-relaxed text-workspace-silver-muted">
+          <p className="text-xs leading-relaxed text-workspace-silver-muted">
             {unsupported
               ? t("blpview.unsupportedReason")
               : (status?.message ?? t("blpview.loadingStatus"))}
@@ -98,7 +110,7 @@ export function BlpViewSection() {
               type="button"
               disabled={controlsDisabled}
               onClick={handleInstall}
-              className="rounded-md bg-workspace-accent/15 px-2.5 py-1.5 text-[11px] font-medium text-workspace-accent ring-1 ring-workspace-accent/30 disabled:cursor-not-allowed disabled:opacity-40"
+              className="rounded-md border border-workspace-accent/70 bg-workspace-accent/15 px-2.5 py-1.5 text-xs font-medium text-workspace-accent disabled:cursor-not-allowed disabled:opacity-40"
             >
               {t("blpview.install")}
             </button>
@@ -107,7 +119,7 @@ export function BlpViewSection() {
               type="button"
               disabled={controlsDisabled}
               onClick={handleUninstall}
-              className="rounded-md border border-workspace-border px-2.5 py-1.5 text-[11px] text-workspace-silver-muted hover:text-red-400 disabled:cursor-not-allowed disabled:opacity-40"
+              className="rounded-md border border-workspace-outline px-2.5 py-1.5 text-xs text-workspace-silver-muted hover:text-red-400 disabled:cursor-not-allowed disabled:opacity-40"
             >
               <Unplug className="mr-1 inline h-3 w-3" />
               {t("blpview.uninstall")}
@@ -118,7 +130,7 @@ export function BlpViewSection() {
             disabled={controlsDisabled}
             onClick={async () => {
               try {
-                await restartExplorer();
+                await confirmAndRestart();
               } catch (err) {
                 setFeedback(
                   err instanceof Error
@@ -127,7 +139,7 @@ export function BlpViewSection() {
                 );
               }
             }}
-            className="rounded-md border border-workspace-border px-2.5 py-1.5 text-[11px] text-workspace-silver-muted hover:text-workspace-accent disabled:cursor-not-allowed disabled:opacity-40"
+            className="rounded-md border border-workspace-outline px-2.5 py-1.5 text-xs text-workspace-silver-muted hover:text-workspace-accent disabled:cursor-not-allowed disabled:opacity-40"
           >
             <RefreshCw className="mr-1 inline h-3 w-3" />
             {t("blpview.restartExplorer")}
@@ -135,7 +147,7 @@ export function BlpViewSection() {
         </div>
 
         {feedback && (
-          <p className="text-[10px] text-workspace-accent">{feedback}</p>
+          <p className="text-xs text-workspace-accent">{feedback}</p>
         )}
       </div>
     </section>

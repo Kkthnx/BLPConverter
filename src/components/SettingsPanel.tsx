@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { Settings } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import type { CompressionFormat } from "../types";
@@ -28,6 +29,30 @@ export function SettingsPanel() {
   const setSettingsOpen = useAppStore((s) => s.setSettingsOpen);
   const updateSettings = useAppStore((s) => s.updateSettings);
   const currentLocale = i18n.language as SupportedLocale;
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  // Modal behaviour: Escape closes, focus moves into the drawer on open and
+  // returns to whatever opened it (the gear button) on close.
+  useEffect(() => {
+    if (!settingsOpen) {
+      return;
+    }
+
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+    closeButtonRef.current?.focus();
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setSettingsOpen(false);
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      previouslyFocused?.focus?.();
+    };
+  }, [settingsOpen, setSettingsOpen]);
 
   if (!settingsOpen) {
     return null;
@@ -58,6 +83,7 @@ export function SettingsPanel() {
       <aside
         className="fixed right-0 top-0 z-50 flex h-full w-full max-w-xs flex-col border-l border-workspace-border bg-workspace-panel shadow-panel"
         role="dialog"
+        aria-modal="true"
         aria-label={t("settings.title")}
       >
         <div className="flex items-center justify-between border-b border-workspace-border px-4 py-2.5">
@@ -68,9 +94,10 @@ export function SettingsPanel() {
             </h2>
           </div>
           <button
+            ref={closeButtonRef}
             type="button"
             onClick={() => setSettingsOpen(false)}
-            className="text-xs text-workspace-silver-muted transition hover:text-white"
+            className="min-h-[24px] rounded px-1.5 text-xs text-workspace-silver-muted transition hover:text-white"
           >
             {t("settings.close")}
           </button>
@@ -78,7 +105,7 @@ export function SettingsPanel() {
 
         <div className="flex-1 space-y-5 overflow-auto p-4">
           <section>
-            <h3 className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-workspace-silver-muted">
+            <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-workspace-silver-muted">
               {t("settings.language")}
             </h3>
             <select
@@ -86,7 +113,7 @@ export function SettingsPanel() {
               onChange={(e) =>
                 handleLocaleChange(e.target.value as SupportedLocale)
               }
-              className="w-full rounded-lg border border-workspace-border bg-workspace-surface px-3 py-2 text-xs text-workspace-silver outline-none transition focus:border-workspace-accent/40"
+              className="w-full rounded-lg border border-workspace-outline bg-workspace-surface px-3 py-2 text-xs text-workspace-silver outline-none transition focus:border-workspace-accent/40"
             >
               {SUPPORTED_LOCALES.map((locale) => (
                 <option key={locale.code} value={locale.code}>
@@ -97,16 +124,16 @@ export function SettingsPanel() {
           </section>
 
           <section>
-            <h3 className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-workspace-silver-muted">
+            <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-workspace-silver-muted">
               {t("settings.outputFolder")}
             </h3>
-            <p className="mb-2 text-[10px] leading-relaxed text-workspace-silver-muted">
+            <p className="mb-2 text-xs leading-relaxed text-workspace-silver-muted">
               {t("settings.outputFolderHint")}
             </p>
             <button
               type="button"
               onClick={handlePickOutput}
-              className="w-full rounded-lg border border-workspace-border px-3 py-2 text-left text-xs text-workspace-silver transition hover:border-workspace-accent/40"
+              className="w-full rounded-lg border border-workspace-outline px-3 py-2 text-left text-xs text-workspace-silver transition hover:border-workspace-accent/40"
             >
               {settings.outputDirectory || t("settings.outputDefault")}
             </button>
@@ -114,7 +141,7 @@ export function SettingsPanel() {
               <button
                 type="button"
                 onClick={clearOutput}
-                className="mt-1.5 text-[10px] text-workspace-silver-muted transition hover:text-workspace-accent"
+                className="mt-1 min-h-[24px] text-xs text-workspace-silver-muted transition hover:text-workspace-accent"
               >
                 {t("settings.resetOutput")}
               </button>
@@ -122,7 +149,7 @@ export function SettingsPanel() {
           </section>
 
           <section>
-            <h3 className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-workspace-silver-muted">
+            <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-workspace-silver-muted">
               {t("settings.compression")}
             </h3>
             <div className="space-y-1.5">

@@ -22,11 +22,7 @@ struct ConvertOutput {
     mipmap_count: u32,
 }
 
-fn convert_blp_to_png(
-    source: &Path,
-    output_dir: &Path,
-    settings: &ConversionSettings,
-) -> Result<ConvertOutput, String> {
+fn convert_blp_to_png(source: &Path, output_path: PathBuf) -> Result<ConvertOutput, String> {
     let blp = load_blp(source).map_err(|e| e.to_string())?;
     let header = &blp.header;
     let format = describe_blp_format(&blp);
@@ -38,7 +34,6 @@ fn convert_blp_to_png(
 
     let image = blp_to_image(&blp, 0).map_err(|e| e.to_string())?;
 
-    let output_path = build_output_path(source, output_dir, settings, "png")?;
     image
         .save_with_format(&output_path, image::ImageFormat::Png)
         .map_err(|e| e.to_string())?;
@@ -54,7 +49,7 @@ fn convert_blp_to_png(
 
 fn convert_png_to_blp(
     source: &Path,
-    output_dir: &Path,
+    output_path: PathBuf,
     settings: &ConversionSettings,
 ) -> Result<ConvertOutput, String> {
     let reader = ImageReader::open(source).map_err(|e| e.to_string())?;
@@ -79,7 +74,6 @@ fn convert_png_to_blp(
         1
     };
 
-    let output_path = build_output_path(source, output_dir, settings, "blp")?;
     save_blp(&blp, &output_path).map_err(|e| e.to_string())?;
 
     Ok(ConvertOutput {
@@ -117,7 +111,13 @@ fn image_has_meaningful_alpha(image: &DynamicImage) -> bool {
         return rgba.pixels().any(|pixel| pixel[3] < 255);
     }
 
-    image.color().has_alpha()
+    // Other alpha layouts (gray+alpha, 16-bit RGBA) still need a pixel check,
+    // or a fully opaque 16-bit PNG would be encoded as if it had transparency.
+    if image.color().has_alpha() {
+        return image.to_rgba8().pixels().any(|pixel| pixel[3] < 255);
+    }
+
+    false
 }
 
 fn validate_texture_dimensions(width: u32, height: u32) -> Result<(), String> {
@@ -172,9 +172,11 @@ pub fn convert_paths_batch(
         };
     }
 
+    let planned = plan_output_paths(&sources, kind, settings);
     let results: Vec<QueueItem> = sources
         .par_iter()
-        .map(|source| convert_path(source, kind, settings))
+        .zip(planned.into_par_iter())
+        .map(|(source, output)| convert_path(source, output, kind, settings))
         .collect();
 
     let succeeded = results
@@ -212,7 +214,12 @@ fn ensure_output_dirs(sources: &[PathBuf], settings: &ConversionSettings) -> Res
     Ok(())
 }
 
-fn convert_path(source: &Path, kind: AssetKind, settings: &ConversionSettings) -> QueueItem {
+fn convert_path(
+    source: &Path,
+    planned_output: Result<PathBuf, String>,
+    kind: AssetKind,
+    settings: &ConversionSettings,
+) -> QueueItem {
     let name = source
         .file_name()
         .and_then(|n| n.to_str())
@@ -238,8 +245,8 @@ fn convert_path(source: &Path, kind: AssetKind, settings: &ConversionSettings) -
         error_message: None,
     };
 
-    let output_dir = match resolve_output_dir(source, settings) {
-        Ok(dir) => dir,
+    let output_path = match planned_output {
+        Ok(path) => path,
         Err(err) => {
             item.queue_status = QueueStatus::Failed;
             item.error_message = Some(err);
@@ -248,8 +255,8 @@ fn convert_path(source: &Path, kind: AssetKind, settings: &ConversionSettings) -
     };
 
     let result = match kind {
-        AssetKind::Blp => convert_blp_to_png(source, &output_dir, settings),
-        AssetKind::Png => convert_png_to_blp(source, &output_dir, settings),
+        AssetKind::Blp => convert_blp_to_png(source, output_path),
+        AssetKind::Png => convert_png_to_blp(source, output_path, settings),
     };
 
     match result {
@@ -295,14 +302,46 @@ fn resolve_output_dir(source: &Path, settings: &ConversionSettings) -> Result<Pa
     }
 }
 
-fn build_output_path(
-    source: &Path,
-    output_dir: &Path,
+fn output_extension(kind: AssetKind) -> &'static str {
+    match kind {
+        AssetKind::Blp => "png",
+        AssetKind::Png => "blp",
+    }
+}
+
+/// Work out every output path before converting anything. Files are converted
+/// in parallel, so two sources that map to the same name (for example
+/// `a/icons/x.blp` and `b/icons/x.blp` with a custom output folder) would race
+/// and one would silently overwrite the other. Later duplicates get a numeric
+/// suffix instead. Names compare case-insensitively because Windows and macOS
+/// file systems usually do.
+fn plan_output_paths(
+    sources: &[PathBuf],
+    kind: AssetKind,
     settings: &ConversionSettings,
-    extension: &str,
-) -> Result<PathBuf, String> {
-    let filename = output_filename(source, settings, extension)?;
-    Ok(output_dir.join(filename))
+) -> Vec<Result<PathBuf, String>> {
+    let extension = output_extension(kind);
+    let mut taken: HashSet<String> = HashSet::with_capacity(sources.len());
+
+    sources
+        .iter()
+        .map(|source| {
+            let dir = resolve_output_dir(source, settings)?;
+            let filename = output_filename(source, settings, extension)?;
+            let mut candidate = dir.join(&filename);
+            let mut suffix = 2u32;
+            while !taken.insert(collision_key(&candidate)) {
+                let stem = filename.strip_suffix(&format!(".{extension}")).unwrap_or(&filename);
+                candidate = dir.join(format!("{stem}_{suffix}.{extension}"));
+                suffix += 1;
+            }
+            Ok(candidate)
+        })
+        .collect()
+}
+
+fn collision_key(path: &Path) -> String {
+    path.to_string_lossy().to_lowercase()
 }
 
 fn output_filename(
@@ -392,6 +431,13 @@ mod tests {
             rgba.pixels_mut().next().unwrap()[3] = 128;
         }
         assert!(image_has_meaningful_alpha(&transparent));
+
+        let opaque16 = DynamicImage::ImageRgba16(image::ImageBuffer::from_pixel(
+            4,
+            4,
+            image::Rgba([1000u16, 2000, 3000, u16::MAX]),
+        ));
+        assert!(!image_has_meaningful_alpha(&opaque16));
     }
 
     #[test]
@@ -450,18 +496,44 @@ mod tests {
             output_directory: String::new(),
         };
 
-        let encoded = convert_png_to_blp(&png_path, &dir, &settings).unwrap();
+        let encoded = convert_png_to_blp(&png_path, dir.join("sample.blp"), &settings).unwrap();
         assert!(encoded.output_path.exists());
         assert_eq!(encoded.width, 8);
         assert_eq!(encoded.height, 8);
         assert_eq!(encoded.mipmap_count, mip_level_count(8, 8));
 
-        let decoded = convert_blp_to_png(&encoded.output_path, &dir, &settings).unwrap();
+        let decoded = convert_blp_to_png(&encoded.output_path, dir.join("sample_out.png")).unwrap();
         assert!(decoded.output_path.exists());
         assert_eq!(decoded.width, 8);
         assert_eq!(decoded.height, 8);
 
         fs::remove_dir_all(&dir).ok();
+    }
+
+    #[test]
+    fn colliding_outputs_get_unique_names() {
+        let settings = ConversionSettings {
+            compression: CompressionFormat::Dxt5,
+            generate_mipmaps: true,
+            output_directory: "output".into(),
+        };
+        let sources = vec![
+            PathBuf::from("a").join("icons").join("spell.blp"),
+            PathBuf::from("b").join("icons").join("spell.blp"),
+            PathBuf::from("c").join("ICONS").join("Spell.blp"),
+            PathBuf::from("c").join("icons").join("other.blp"),
+        ];
+
+        let planned: Vec<PathBuf> = plan_output_paths(&sources, AssetKind::Blp, &settings)
+            .into_iter()
+            .map(Result::unwrap)
+            .collect();
+
+        let out = PathBuf::from("output");
+        assert_eq!(planned[0], out.join("icons_spell.png"));
+        assert_eq!(planned[1], out.join("icons_spell_2.png"));
+        assert_eq!(planned[2], out.join("ICONS_Spell_3.png"));
+        assert_eq!(planned[3], out.join("icons_other.png"));
     }
 
     #[test]

@@ -21,7 +21,7 @@ export function TitleBar() {
           <h1 className="text-sm font-semibold leading-none text-white">
             {APP_NAME}
           </h1>
-          <p className="mt-0.5 text-[10px] text-workspace-silver-muted">
+          <p className="mt-0.5 text-xs text-workspace-silver-muted">
             {t("app.dropToConvert")}
           </p>
         </div>
@@ -29,13 +29,13 @@ export function TitleBar() {
 
       <div className="flex items-center gap-2">
         {isConverting && (
-          <span className="text-[10px] font-medium text-workspace-accent animate-pulse">
+          <span className="text-xs font-medium text-workspace-accent motion-safe:animate-pulse">
             {t("app.converting")}
           </span>
         )}
         {outputDirectory && (
           <span
-            className="hidden max-w-[140px] truncate text-[10px] text-workspace-silver-muted sm:inline"
+            className="hidden max-w-[140px] truncate text-xs text-workspace-silver-muted sm:inline"
             title={outputDirectory}
           >
             {outputDirectory}
@@ -44,7 +44,7 @@ export function TitleBar() {
         <button
           type="button"
           onClick={() => setSettingsOpen(true)}
-          className="flex h-7 w-7 items-center justify-center rounded-md border border-workspace-border text-workspace-silver-muted transition hover:border-workspace-accent/40 hover:text-workspace-accent"
+          className="flex h-7 w-7 items-center justify-center rounded-md border border-workspace-outline text-workspace-silver-muted transition hover:border-workspace-accent/40 hover:text-workspace-accent"
           aria-label={t("settings.title")}
         >
           <Settings className="h-3.5 w-3.5" />

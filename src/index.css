@@ -23,8 +23,12 @@
   }
 
   /* Keyboard focus stays visible, pointer focus does not add a ring. */
+  /* Keep a transparent outline under the ring. Windows contrast themes force
+     box-shadow (the ring) to none but repaint outlines in a system color, so
+     focus stays visible there. */
   :focus-visible {
-    outline: none;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
     @apply ring-2 ring-workspace-accent/60 ring-offset-1 ring-offset-workspace-bg;
   }
 

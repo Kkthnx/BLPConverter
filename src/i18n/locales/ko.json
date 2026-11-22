@@ -15,7 +15,8 @@
     "toBlp": {
       "hint": ".png 파일 또는 폴더 드롭",
       "subhint": "압축 설정으로 인코딩"
-    }
+    },
+    "browse": "파일 찾아보기…"
   },
   "activity": {
     "title": "활동",
@@ -48,7 +49,8 @@
     "uninstallFailed": "제거 실패",
     "restartFailed": "탐색기를 다시 시작할 수 없습니다",
     "loadingStatus": "BLPView 상태 확인 중…",
-    "unsupportedReason": "BLPView는 Windows 파일 탐색기 셸 확장입니다. .blp 파일의 폴더 썸네일은 Windows 10/11에서만 사용할 수 있습니다."
+    "unsupportedReason": "BLPView는 Windows 파일 탐색기 셸 확장입니다. .blp 파일의 폴더 썸네일은 Windows 10/11에서만 사용할 수 있습니다.",
+    "restartConfirm": "지금 Windows 탐색기를 다시 시작할까요? 열려 있는 탐색기 창이 닫힙니다."
   },
   "conversion": {
     "start": "{{count}}개 파일 변환 중 ({{label}})…",

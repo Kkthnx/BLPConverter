@@ -1,76 +1,79 @@
 import { useEffect } from "react";
 import { getCurrentWebview } from "@tauri-apps/api/webview";
-import { useTranslation } from "react-i18next";
+import i18n from "../i18n";
 import { convertPaths } from "../lib/conversion";
 import { useAppStore } from "../store/useAppStore";
 import type { ConvertDirection } from "../types";
 
-function directionFromX(x: number): ConvertDirection {
-  return x < window.innerWidth / 2 ? "to-png" : "to-blp";
+// Tauri reports drag positions in physical pixels, while innerWidth is in CSS
+// pixels. Convert first, or drops land on the wrong panel when display scaling
+// is above 100%.
+function directionFromPhysicalX(physicalX: number): ConvertDirection {
+  const cssX = physicalX / (window.devicePixelRatio || 1);
+  return cssX < window.innerWidth / 2 ? "to-png" : "to-blp";
 }
 
 export function useDragDrop() {
-  const { t } = useTranslation();
-  const setDragTarget = useAppStore((s) => s.setDragTarget);
-  const addLog = useAppStore((s) => s.addLog);
-
   useEffect(() => {
+    if (!("__TAURI_INTERNALS__" in window)) {
+      return;
+    }
+
+    // Registration is async. If cleanup runs before it resolves (StrictMode,
+    // fast remounts), unregister as soon as it does so no listener leaks and
+    // a single drop never fires twice.
+    let disposed = false;
     let unlisten: (() => void) | undefined;
+    const { setDragTarget, addLog } = useAppStore.getState();
 
-    const setup = async () => {
-      if (!("__TAURI_INTERNALS__" in window)) {
-        return;
-      }
+    void getCurrentWebview()
+      .onDragDropEvent(async (event) => {
+        const payload = event.payload;
 
-      unlisten = await getCurrentWebview().onDragDropEvent(async (event) => {
-        if (event.payload.type === "over" || event.payload.type === "enter") {
-          if ("position" in event.payload) {
-            setDragTarget(directionFromX(event.payload.position.x));
-          }
+        if (payload.type === "over" || payload.type === "enter") {
+          setDragTarget(directionFromPhysicalX(payload.position.x));
           return;
         }
 
-        if (event.payload.type === "leave") {
+        if (payload.type === "leave") {
           setDragTarget(null);
           return;
         }
 
-        if (event.payload.type === "drop") {
-          setDragTarget(null);
+        setDragTarget(null);
 
-          if (useAppStore.getState().isConverting) {
-            addLog(t("conversion.busy"), "error");
-            return;
-          }
+        if (useAppStore.getState().isConverting) {
+          addLog(i18n.t("conversion.busy"), "error");
+          return;
+        }
 
-          const paths = event.payload.paths;
-          if (paths.length === 0) {
-            return;
-          }
+        if (payload.paths.length === 0) {
+          return;
+        }
 
-          const direction =
-            "position" in event.payload
-              ? directionFromX(event.payload.position.x)
-              : "to-png";
-
-          try {
-            await convertPaths(paths, direction);
-          } catch (err) {
-            addLog(
-              err instanceof Error
-                ? err.message
-                : t("conversion.dropFailed"),
-              "error",
-            );
-          }
+        try {
+          await convertPaths(
+            payload.paths,
+            directionFromPhysicalX(payload.position.x),
+          );
+        } catch (err) {
+          addLog(
+            err instanceof Error ? err.message : i18n.t("conversion.dropFailed"),
+            "error",
+          );
+        }
+      })
+      .then((fn) => {
+        if (disposed) {
+          fn();
+        } else {
+          unlisten = fn;
         }
       });
-    };
-
-    void setup();
 
     return () => {
+      disposed = true;
       unlisten?.();
     };
-  }, [addLog, setDragTarget, t]);
+  }, []);
 }

@@ -2,7 +2,7 @@ use std::ffi::OsStr;
 use std::io;
 use std::path::Path;
 
-use winreg::enums::RegType;
+use winreg::enums::{RegType, HKEY_LOCAL_MACHINE, KEY_CREATE_SUB_KEY};
 use winreg::types::FromRegValue;
 use winreg::{RegKey, RegValue};
 
@@ -14,6 +14,17 @@ pub(crate) fn notify_shell_assoc(_reason: &str) {
         SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, None, None);
         SHChangeNotify(SHCNE_UPDATEIMAGE, SHCNF_IDLIST, None, None);
     }
+}
+
+/// HKLM when this process may write per-machine classes, which in practice
+/// means it runs elevated. Opening `Software\Classes\CLSID` for subkey creation
+/// is the same access the registration needs, so it doubles as the check.
+pub(crate) fn machine_classes_writable() -> Option<RegKey> {
+    let machine = RegKey::predef(HKEY_LOCAL_MACHINE);
+    machine
+        .open_subkey_with_flags(r"Software\Classes\CLSID", KEY_CREATE_SUB_KEY)
+        .ok()
+        .map(|_| machine)
 }
 
 pub(crate) struct RegKeyHelper {

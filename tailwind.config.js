@@ -10,6 +10,9 @@ export default {
           panel: "#161b24",
           elevated: "#1d2430",
           border: "#2a3140",
+          // Edges of interactive controls. 3.1:1 or more against bg, surface
+          // and panel, the WCAG 1.4.11 minimum for component boundaries.
+          outline: "#5f6979",
           silver: "#aab3c1",
           "silver-muted": "#7c8798",
           accent: "#3b9ef5",

@@ -31,6 +31,22 @@ export async function pickOutputDirectory(): Promise<string | null> {
   return null;
 }
 
+/** Click alternative to dropping files, for keyboard and non-drag users. */
+export async function pickSourceFiles(kind: AssetKind): Promise<string[]> {
+  const { open } = await import("@tauri-apps/plugin-dialog");
+  const extension = kind === "blp" ? "blp" : "png";
+  const selected = await open({
+    multiple: true,
+    directory: false,
+    filters: [{ name: extension.toUpperCase(), extensions: [extension] }],
+  });
+
+  if (Array.isArray(selected)) {
+    return selected;
+  }
+  return typeof selected === "string" ? [selected] : [];
+}
+
 export async function getBlpViewStatus(): Promise<BlpViewStatus> {
   return invoke<BlpViewStatus>("blpview_status");
 }

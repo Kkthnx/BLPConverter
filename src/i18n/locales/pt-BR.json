@@ -15,7 +15,8 @@
     "toBlp": {
       "hint": "Arraste arquivos ou pastas .png",
       "subhint": "Codifica com suas configurações de compressão"
-    }
+    },
+    "browse": "Procurar arquivos…"
   },
   "activity": {
     "title": "Atividade",
@@ -48,7 +49,8 @@
     "uninstallFailed": "Falha na desinstalação",
     "restartFailed": "Não foi possível reiniciar o Explorer",
     "loadingStatus": "Verificando o status do BLPView…",
-    "unsupportedReason": "BLPView é uma extensão shell do Explorador de Arquivos do Windows. Miniaturas de pastas para arquivos .blp estão disponíveis apenas no Windows 10/11."
+    "unsupportedReason": "BLPView é uma extensão shell do Explorador de Arquivos do Windows. Miniaturas de pastas para arquivos .blp estão disponíveis apenas no Windows 10/11.",
+    "restartConfirm": "Reiniciar o Explorador do Windows agora? As janelas abertas do Explorador serão fechadas."
   },
   "conversion": {
     "start": "Convertendo {{count}} arquivo(s) ({{label}})…",

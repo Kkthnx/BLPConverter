@@ -2,6 +2,26 @@
 
 All notable changes to BLP Converter are documented in this file.
 
+## [1.3.0] - 2026-11-22
+
+### Fixed
+- Drops now land on the correct panel when Windows display scaling is above 100%.
+- Changing the language no longer leaves a second drop listener behind that logged a false "already converting" error.
+- With a custom output folder, files that map to the same output name no longer overwrite each other. Later ones get a `_2`, `_3` suffix.
+- Fully opaque 16-bit PNGs are no longer encoded as if they had transparency.
+- The drop panels no longer clip at the default window size or overflow at the minimum width. The default window is now 570x400 and the minimum height 360.
+- **BLPView (Windows)**, thumbnails now work when Explorer runs elevated, such as on the built-in Administrator account or with UAC off. Windows ignores per-user COM classes for those processes, so install also registers the handler per-machine when it has admin rights, and uninstall removes it again.
+- **BLPView (Windows)**, uninstall removes only the values it added under `.blp` and keeps the user's own file associations.
+- **BLPView (Windows)**, reinstalling the same build no longer fails while Explorer has the thumbnail DLL loaded.
+
+### Added
+- A Browse button on each panel as an alternative to drag and drop.
+- **BLPView (Windows)**, a confirmation before Explorer is restarted, since that closes open Explorer windows.
+
+### Changed
+- **BLPView (Windows)**, thumbnails decode the smallest stored mip level that covers the requested size instead of the full image.
+- Accessibility. Text is 12px or larger, all text meets 4.5:1 contrast, control edges meet 3:1, and click targets are at least 24px. Focus stays visible in Windows contrast themes, the converting animation respects reduced motion, and the active drop zone changes from dashed to solid so it does not rely on color alone. The settings drawer closes with Escape and returns focus to the gear button.
+
 ## [1.2.1] - 2026-08-29
 
 ### Fixed
@@ -72,6 +92,7 @@ All notable changes to BLP Converter are documented in this file.
 ### Added
 - Initial release, BLP and PNG conversion with drag-and-drop UI.
 
+[1.3.0]: https://github.com/Kkthnx/BLPConverter/compare/v1.2.1...v1.3.0
 [1.2.1]: https://github.com/Kkthnx/BLPConverter/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/Kkthnx/BLPConverter/compare/v1.1.3...v1.2.0
 [1.1.3]: https://github.com/Kkthnx/BLPConverter/compare/v1.1.2...v1.1.3

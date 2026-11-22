@@ -15,7 +15,8 @@
     "toBlp": {
       "hint": ".png-Dateien oder Ordner ablegen",
       "subhint": "Kodiert mit Ihren Kompressionseinstellungen"
-    }
+    },
+    "browse": "Dateien auswählen…"
   },
   "activity": {
     "title": "Aktivität",
@@ -48,7 +49,8 @@
     "uninstallFailed": "Deinstallation fehlgeschlagen",
     "restartFailed": "Explorer konnte nicht neu gestartet werden",
     "loadingStatus": "BLPView-Status wird geprüft…",
-    "unsupportedReason": "BLPView ist eine Windows-Explorer-Shell-Erweiterung. Ordner-Vorschauen für .blp-Dateien sind nur unter Windows 10/11 verfügbar."
+    "unsupportedReason": "BLPView ist eine Windows-Explorer-Shell-Erweiterung. Ordner-Vorschauen für .blp-Dateien sind nur unter Windows 10/11 verfügbar.",
+    "restartConfirm": "Windows Explorer jetzt neu starten? Geöffnete Explorer-Fenster werden geschlossen."
   },
   "conversion": {
     "start": "Konvertiere {{count}} Datei(en) ({{label}})…",

@@ -15,7 +15,8 @@
     "toBlp": {
       "hint": "Drop .png files or folders",
       "subhint": "Encodes with your compression settings"
-    }
+    },
+    "browse": "Browse files…"
   },
   "activity": {
     "title": "Activity",
@@ -48,7 +49,8 @@
     "uninstallFailed": "Uninstall failed",
     "restartFailed": "Could not restart Explorer",
     "loadingStatus": "Checking BLPView status…",
-    "unsupportedReason": "BLPView is a Windows File Explorer shell extension. Folder thumbnails for .blp files are only available on Windows 10/11."
+    "unsupportedReason": "BLPView is a Windows File Explorer shell extension. Folder thumbnails for .blp files are only available on Windows 10/11.",
+    "restartConfirm": "Restart Windows Explorer now? Open Explorer windows will close."
   },
   "conversion": {
     "start": "Converting {{count}} file(s) ({{label}})…",

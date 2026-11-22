@@ -1,6 +1,6 @@
 use std::fs;
 use std::io;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 use blp_shell_ext::{
     GuidExt, CLSID_BLP_THUMB, DEFAULT_EXT, DEFAULT_PROGID, FRIENDLY_NAME,
@@ -11,7 +11,7 @@ use winreg::RegKey;
 
 use crate::types::BlpViewActionResult;
 use super::paths::{ensure_dll_parent, preferred_dll_path};
-use super::reg_helpers::{notify_shell_assoc, RegKeyHelper};
+use super::reg_helpers::{machine_classes_writable, notify_shell_assoc, RegKeyHelper};
 
 #[cfg(windows)]
 static DLL_BYTES: &[u8] = include_bytes!("../../resources/blpview_thumb.dll");
@@ -45,16 +45,18 @@ fn install_inner() -> io::Result<()> {
     RegKeyHelper::open(&root, r"Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved")?
         .set(&thumb_clsid, FRIENDLY_NAME)?;
 
-    {
-        let cls = RegKeyHelper::open(&root, format!(r"Software\Classes\CLSID\{thumb_clsid}"))?;
-        cls.set_default(FRIENDLY_NAME)?;
-        // Run inside Explorer instead of an isolated surrogate. Required for reliable
-        // thumbnail activation on many Windows 10/11 setups.
-        cls.set("DisableProcessIsolation", 1u32)?;
-        let inproc = cls.sub("InprocServer32")?;
-        inproc.set_default(dll_path.as_os_str())?;
-        inproc.set("ThreadingModel", "Apartment")?;
-        let _ = cls.sub(&format!(r"Implemented Categories\{thumb_catid}"));
+    register_class(&root, &dll_path, &thumb_clsid, &thumb_catid)?;
+
+    // An elevated Explorer only reads per-machine COM registrations. That is the
+    // case for the built-in Administrator account and whenever UAC is off, so
+    // when this process can write HKLM, register the class there as well.
+    if let Some(machine) = machine_classes_writable() {
+        register_class(&machine, &dll_path, &thumb_clsid, &thumb_catid)?;
+        RegKeyHelper::open(
+            &machine,
+            r"Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved",
+        )?
+        .set(&thumb_clsid, FRIENDLY_NAME)?;
     }
 
     {
@@ -116,6 +118,24 @@ fn install_inner() -> io::Result<()> {
     Ok(())
 }
 
+fn register_class(
+    root: &RegKey,
+    dll_path: &Path,
+    thumb_clsid: &str,
+    thumb_catid: &str,
+) -> io::Result<()> {
+    let cls = RegKeyHelper::open(root, format!(r"Software\Classes\CLSID\{thumb_clsid}"))?;
+    cls.set_default(FRIENDLY_NAME)?;
+    // Run inside Explorer instead of an isolated surrogate. Required for reliable
+    // thumbnail activation on many Windows 10/11 setups.
+    cls.set("DisableProcessIsolation", 1u32)?;
+    let inproc = cls.sub("InprocServer32")?;
+    inproc.set_default(dll_path.as_os_str())?;
+    inproc.set("ThreadingModel", "Apartment")?;
+    let _ = cls.sub(&format!(r"Implemented Categories\{thumb_catid}"));
+    Ok(())
+}
+
 fn materialize_dll() -> io::Result<PathBuf> {
     if DLL_BYTES.is_empty() {
         return Err(io::Error::new(
@@ -126,7 +146,16 @@ fn materialize_dll() -> io::Result<PathBuf> {
 
     let path = preferred_dll_path();
     ensure_dll_parent(&path)?;
-    fs::write(&path, DLL_BYTES)?;
+
+    // Explorer keeps the DLL loaded once it has made a thumbnail, and Windows
+    // refuses to overwrite a loaded DLL. Reinstalling the same build should not
+    // fail on that, so skip the write when the file already matches.
+    let unchanged = fs::read(&path)
+        .map(|existing| existing == DLL_BYTES)
+        .unwrap_or(false);
+    if !unchanged {
+        fs::write(&path, DLL_BYTES)?;
+    }
     Ok(path)
 }
 

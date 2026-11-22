@@ -15,7 +15,8 @@
     "toBlp": {
       "hint": "拖放 .png 文件或文件夹",
       "subhint": "按您的压缩设置编码"
-    }
+    },
+    "browse": "浏览文件…"
   },
   "activity": {
     "title": "活动",
@@ -48,7 +49,8 @@
     "uninstallFailed": "卸载失败",
     "restartFailed": "无法重启资源管理器",
     "loadingStatus": "正在检查 BLPView 状态…",
-    "unsupportedReason": "BLPView 是 Windows 文件资源管理器的 Shell 扩展。.blp 文件的文件夹缩略图仅在 Windows 10/11 上可用。"
+    "unsupportedReason": "BLPView 是 Windows 文件资源管理器的 Shell 扩展。.blp 文件的文件夹缩略图仅在 Windows 10/11 上可用。",
+    "restartConfirm": "现在重启 Windows 资源管理器吗？已打开的资源管理器窗口将会关闭。"
   },
   "conversion": {
     "start": "正在转换 {{count}} 个文件（{{label}}）…",

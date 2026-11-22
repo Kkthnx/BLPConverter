@@ -6,7 +6,7 @@ export function AboutSection() {
 
   return (
     <section>
-      <h3 className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-workspace-silver-muted">
+      <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-workspace-silver-muted">
         {t("about.title")}
       </h3>
 
@@ -19,21 +19,21 @@ export function AboutSection() {
           />
           <div>
             <p className="text-sm font-semibold text-white">{APP_NAME}</p>
-            <p className="text-[10px] text-workspace-silver-muted">
+            <p className="text-xs text-workspace-silver-muted">
               v{APP_VERSION}
             </p>
           </div>
         </div>
 
-        <p className="text-[11px] leading-relaxed text-workspace-silver-muted">
+        <p className="text-xs leading-relaxed text-workspace-silver-muted">
           {t("app.tagline")}
         </p>
 
-        <p className="text-[11px] leading-relaxed text-workspace-silver-muted/80">
+        <p className="text-xs leading-relaxed text-workspace-silver-muted">
           {t("app.description")}
         </p>
 
-        <p className="border-t border-workspace-border pt-2 text-[10px] text-workspace-silver-muted">
+        <p className="border-t border-workspace-border pt-2 text-xs text-workspace-silver-muted">
           {t("app.madeBy", { author: APP_AUTHOR })}
         </p>
       </div>
